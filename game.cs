@@ -1,0 +1,367 @@
+using System.Collections.Generic;
+using System;
+
+
+public class Program
+{
+    public static void Main()
+    {
+        Console.Write("Digite Seu Nome: ");
+        string n = Console.ReadLine();
+        Console.Write("Escolha Sua Classe: ");
+        string t = Console.ReadLine();
+       
+        Character Hero = new Character(n, t, 100, 7);
+        Hero.Inventory.Add("Poção de Vida");
+        Hero.Inventory.Add("Poção de Força");
+        Enemy Wolf = new Enemy("Lobo Cinzento", 100, 7);
+        Random Given = new Random();
+
+
+        Intro(Hero, Wolf);
+
+
+        while (Wolf.health > 0 && Hero.health > 0)
+        {
+            MostrarStatus(Hero, Wolf);
+
+
+            bool turnPlayerOff = false;
+            int userAttack = 0;
+            // Variável para guardar qual ataque foi usado, para o lobo reagir depois
+            int lastAttackUsed = 1;
+           
+            while(turnPlayerOff == false)
+            {
+                MostrarOpcoes();
+
+
+                if (!int.TryParse(Console.ReadLine(), out int respUser)) continue;
+               
+                if (respUser == 1) // ATACAR
+                {
+                    MostrarOpcoesAtaques();
+                    if (!int.TryParse(Console.ReadLine(), out int respUserAttack)) continue;
+                   
+                    if(respUserAttack == 5) continue; // Voltar
+
+
+                    userAttack = Hero.Attack(respUserAttack, Given);
+                   
+                    if (userAttack == 0)
+                    {
+                        Console.WriteLine("Ataque Inválido. (Escolha de 1 a 4)");
+                        continue;
+                    }
+                    else
+                    {
+                        Wolf.ReceiveDamage(userAttack);
+                        Console.WriteLine($"{Wolf.name} sofreu {userAttack} de Dano!");
+                        lastAttackUsed = respUserAttack; // Guarda qual ataque usou
+                        turnPlayerOff = true; // Encerra turno do jogador
+                    }
+                }
+                else if (respUser == 2) // MOCHILA
+                {
+                    bool usedItem = Hero.OpenBag();
+
+
+                    if (usedItem == true)
+                    {
+                        turnPlayerOff = true;
+                        lastAttackUsed = 1;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Você fechou a Mochila");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Opção Inválida. (Escolha de 1 ou 2 )");
+                }
+            }
+
+
+            // TURNO DO INIMIGO
+            if (Wolf.health > 0)
+            {
+                int wolfAttack = Wolf.Attack(lastAttackUsed, Given);
+               
+                if (Wolf.health <= 15)
+                {
+                    Console.WriteLine($"O {Wolf.name} Está Sangrando Muito!!, Vida Restante: {Wolf.health}");
+                }
+                else
+                {
+                    Console.WriteLine($"O {Wolf.name} Ainda Está Muito Forte, Vida Restante: {Wolf.health}");
+                }
+
+
+                Hero.ReceiveDamage(wolfAttack);
+                Console.WriteLine($"O {Wolf.name} Revidou e Te Causou {wolfAttack} de Dano, Sua Vida Restante: {Hero.health}");
+
+
+                if (Hero.health <= 0)
+                {
+                    Console.WriteLine($"VOCÊ FOI MORTO PELO {Wolf.name.ToUpper()}!");
+                }
+            }
+        }
+
+
+        if (Wolf.health <= 0 && Hero.health > 0)
+        {
+            Console.WriteLine($"O {Wolf.name} Foi Morto, Que Vitória Gloriosa!");
+        }
+    }
+
+
+    public static void MostrarOpcoes()
+    {
+        Console.WriteLine("\n--- O QUE DESEJA FAZER? ---");
+        Console.WriteLine("1. Atacar");
+        Console.WriteLine("2. Abrir Mochila");
+        Console.Write("Escolha: ");
+    }
+    public static void MostrarOpcoesAtaques()
+    {
+        Console.WriteLine("---------------------------------------------------------------------------------------");
+        Console.WriteLine("| 1. Corte Rápido (1-11)  | Multiplicador: 0.5x | 2. Adaga de 2 Gumes (20-50) | Mult: 1.5x |");
+        Console.WriteLine("| 3. Orbe (15-45)     | Multiplicador: 0.0x | 4. Arriscado (10-80)        | Mult: 2.5x |");
+        Console.WriteLine("| 5. Voltar");
+        Console.WriteLine("---------------------------------------------------------------------------------------");
+        Console.Write($"Qual Opção Deseja Usar, 1, 2, 3, 4 ou 5?: ");
+    }
+
+
+    public static void MostrarStatus(Character c, Enemy e)
+    {
+        Console.WriteLine("---------------------------------------------");
+        Console.WriteLine($"| {c.name.ToUpper()} HP: {c.health} | {e.name.ToUpper()} HP: {e.health} |");
+        Console.WriteLine("---------------------------------------------");
+    }
+
+
+    public static void Intro(Character c, Enemy e)
+    {
+        Console.WriteLine($"O destemido recruta {c.name}, irá ser nomeado como {c.type} essa noite, Sua Força Atual é de {c.power}.");
+        Console.WriteLine($"Urgente!!, Um {e.name} foi avistado, Chegou a hora da BATALHA!");
+    }
+}  
+
+
+public class Character
+{
+    public string name;
+    public string type;
+    public int health;
+    public int power;
+   
+    // Lista de Inventário precisa ser pública para acessar na Main se necessário, mas aqui estamos usando métodos internos
+    public List<string> Inventory = new List<string>();
+
+
+    public Character(string n, string t, int h, int p)
+    {
+        name = n;
+        type = t;
+        health = h;
+        power = p;
+    }
+
+
+    public int Attack(int option, Random Given)
+    {
+        int finalDamage = 0;
+
+
+        if (option == 1)
+        {
+            finalDamage = (int)(power * 0.5) + Given.Next(1, 12);
+            Console.WriteLine(power);
+        }
+        else if (option == 2)
+        {
+            finalDamage = (int)(power * 1.5) + Given.Next(20, 51);
+        }
+        else if (option == 3)
+        {
+            finalDamage = power + Given.Next(15, 46);
+        }
+        else if (option == 4)
+        {
+            finalDamage = (int)(power * 2.5) + Given.Next(10, 81);
+        }
+        return finalDamage;
+    }
+
+
+    public bool OpenBag()
+    {
+        Console.WriteLine("\n--- MOCHILA ---");
+        if (Inventory.Count == 0)
+        {
+            Console.WriteLine("(Vazia)");
+            return false;
+        }
+
+
+        for (int i = 0; i < Inventory.Count; i++)
+        {
+            Console.WriteLine($"{i + 1} . {Inventory[i]}");
+        }
+        Console.WriteLine($"{Inventory.Count + 1} . Fechar");
+
+
+        Console.Write("Escolha: ");
+
+
+        if (int.TryParse(Console.ReadLine(), out int choose))
+        {
+            if (choose == Inventory.Count + 1) return false;
+
+
+            int index = choose - 1;
+            if (index >= 0 && index < Inventory.Count)
+            {
+                if (Inventory[index] == "Poção de Vida")
+                {
+                    Heal();
+                    return true;
+                }    
+                else if(Inventory[index] == "Poção de Força")
+                {
+                    PowerUp();
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Você usou {Inventory[index]}, mas nada aconteceu.");
+                    Inventory.RemoveAt(index);
+                    return true;
+                }
+            }
+        }  
+        return false;
+    }
+
+
+    public void Heal()
+    {  
+        if (health < 100)
+        {
+            if (Inventory.Contains("Poção de Vida"))
+            {
+                int lifePotion = 20;
+                int lastHealth = health;
+                health  += lifePotion;
+
+
+                if (health >100)
+                {
+                    health = 100;  
+                }
+
+
+                int recovery = health - lastHealth;
+
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Inventory.Remove("Poção de Vida");
+                Console.WriteLine($"Você bebeu uma Poção de Vida e recuperou {recovery} de vida!");
+                Console.WriteLine($"Vida Restante: {health}!");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("Você não tem Poção de Vida");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Você está com a vida CHEIA.");
+        }
+    }
+    
+    public void PowerUp() 
+    {
+        if (Inventory.Contains("Poção de Força")) 
+        {
+            int strengthPotion = 3;
+            power += strengthPotion;
+            
+            Console.ForegroundColor = ConsoleColor.Green;
+            Inventory.Remove("Poção de Força");
+            Console.WriteLine($"Você bebeu uma Poção de Força, e aumentou {strengthPotion} de pontos de Força!");
+            Console.WriteLine($"Força Atual: {power}!");
+            Console.ResetColor();
+        }
+    }
+
+
+    public void ReceiveDamage(int damage)
+    {
+        health = health - damage;
+        if (health < 0)
+        {
+            health = 0;
+        }
+    }
+}
+
+
+public class Enemy
+{
+    public string name;
+    public int health;
+    public int power;
+
+
+    public Enemy(string n, int h, int p)
+    {
+        name = n;
+        health = h;
+        power = p;
+    }
+
+
+    public int Attack(int playerAction, Random Given)
+    {
+        int finalDamage = 0;
+        if (playerAction == 1) {
+            finalDamage = power + Given.Next(1, 12);
+            Console.WriteLine($"\n! O {name} te Ataca!");
+        }
+        else if (playerAction == 2)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"\n! O {name} foi provocado pelo seu golpe forte !");
+            Console.ResetColor();
+            finalDamage = (int)(power * 2.0) + Given.Next(25, 56);
+        }
+        else if (playerAction == 3)
+        {
+            Console.WriteLine($"\n! O {name} te Ataca Mostrando o seu poder!");
+            finalDamage = power + Given.Next(15, 46);
+        }
+        else if (playerAction == 4)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\n!!! O {name} ficou FURIOSO com seu ataque !!!");
+            Console.ResetColor();
+            finalDamage = (int)(power * 3.0) + Given.Next(10, 81);
+        }
+        return finalDamage;
+    }
+
+
+    public void ReceiveDamage(int damage)
+    {
+        health = health - damage;
+        if (health < 0)
+        {
+            health = 0;
+        }
+    }
+}
