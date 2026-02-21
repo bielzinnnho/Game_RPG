@@ -8,11 +8,69 @@ public class Program
     {
         Console.Write("Digite Seu Nome: ");
         string n = Console.ReadLine();
-        Console.Write("Escolha Sua Classe: ");
-        string t = Console.ReadLine();
-        Character Hero = new Character(n, t, 100, 7, 10);
-        Hero.Inventory.Add("Poção de Vida");
-        Hero.Inventory.Add("Poção de Força");
+
+        Console.WriteLine("Escolha Sua Classe: ");
+        Console.WriteLine("1. Barbáro   (Vida: 120 | Força:10) | Itens: (2x Pocão de Força) | (5 Moedas) |");
+        Console.WriteLine("2. Arqueira  (Vida: 100 | Força:8)  | Itens: (1x Poção de Vida)  | (10 Moedas)|");
+        Console.WriteLine("3. Fada      (Vida: 130 | Força:7)  | Itens: (2x Poção de Vida)  | (5 Moedas) |");
+        Console.WriteLine("4. Mago      (Vida: 80  | Força:11) | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (3 Moedas) |");
+        Console.WriteLine("5. Elfo      (Vida: 90  | Força:9)  | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (3 Moedas) |");
+        Console.WriteLine("6. Ladino    (Vida: 100 | Força:7)  | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (15 Moedas)|");
+
+
+        bool validateNumber = false;
+        Character Hero = null;
+        while (validateNumber == false)
+        {
+            Console.Write("Escolha (1-6): ");
+            if (!int.TryParse(Console.ReadLine(), out int chooseClass)) continue;
+            if (chooseClass == 1)
+            {
+                Hero = new Character(n, "Barbáro", 120, 10, 5);
+                validateNumber = true;
+                Hero.Inventory.Add("Poção de Força");
+                Hero.Inventory.Add("Poção de Força");
+            }
+            else if (chooseClass == 2)
+            {
+                Hero = new Character(n, "Arqueira", 100, 8, 10);
+                validateNumber = true;
+                Hero.Inventory.Add("Poção de Vida");
+            }
+            else if (chooseClass == 3)
+            {
+                Hero = new Character(n, "Fada", 130, 7, 5);
+                validateNumber = true;
+                Hero.Inventory.Add("Poção de Vida");
+                Hero.Inventory.Add("Poção de Vida");
+            }
+            else if (chooseClass == 4)
+            {
+                Hero = new Character(n, "Mago", 80, 11, 3);
+                validateNumber = true;
+                Hero.Inventory.Add("Poção de Vida");
+                Hero.Inventory.Add("Poção de Força");
+            }
+            else if (chooseClass == 5)
+            {
+                Hero = new Character(n, "Elfo", 90, 9, 3);
+                validateNumber = true;
+                Hero.Inventory.Add("Poção de Vida");
+                Hero.Inventory.Add("Poção de Força");
+            }
+            else if (chooseClass == 6)
+            {
+                Hero = new Character(n, "Ladino", 100, 7, 15);
+                validateNumber = true;
+                Hero.Inventory.Add("Poção de Vida");
+                Hero.Inventory.Add("Poção de Força");
+            }
+            else
+            {
+                Console.WriteLine("Número Inválido (Escolha um Número de 1 a 6)");
+            }
+        }
+
         MainIntro(Hero);
 
         bool inLobby = true;
@@ -38,7 +96,7 @@ public class Program
 
                     if (choose2 == 1)
                     {
-                        if (Hero.coin >= 50)
+                        if (Hero.coin >= 10)
                         {
                             Hero.Inventory.Add("Poção de Vida");
                             Console.WriteLine("* POÇÂO DE VIDA RECEBIDA");
@@ -98,8 +156,7 @@ public class Program
         Console.WriteLine("\n--- O QUE DESEJA FAZER? ---");
         Console.WriteLine("1. Atacar");
         Console.WriteLine("2. Abrir Mochila");
-        Console.Write("Escolha: ");
-    }
+        Console.Write("Escolha: ");    }
     public static void ShowAttackOptions()
     {
         Console.WriteLine("------------------------------------- ESCOLHA UM ATAQUE ----------------------------------------");
@@ -125,8 +182,7 @@ public class Program
         Console.WriteLine($"\nO {c.type} chamado {c.name} irá sair em sua primeira aventura, Sua Força Atual é de {c.power}.\n");
         Console.WriteLine("MÃE: Espere!! Leve isso com você!\n");
         Console.WriteLine("* VOCÊ RECEBEU 10 Moedas");
-        Console.WriteLine("* POÇÂO DE VIDA RECEBIDA");
-        Console.WriteLine("* POÇÂO DE FORÇA RECEBIDA\n");
+        c.coin += 10;
         Console.WriteLine("MÃE: Por Favor meu filho se cuide...\n");
     }
 
@@ -136,7 +192,7 @@ public class Program
         Console.WriteLine($"Urgente!!, Um {e.name} foi avistado, Chegou a hora da BATALHA!");
     }
 
-    public static void MessageGameOver(Character c)
+   public static void MessageGameOver(Character c)
     {
         Console.WriteLine($"Então o {c.name} Ficou com medo e resolveu desistir de sua aventura, e voltou para sua casa de volta para os braços de sua mãe. Os anos se passaram, ele foi ficando cada vez mais velho e por conta da sua fraqueza ele não conseguiu seguir com o seu sonho de ser um grande {c.type}, e morreu pateticamente de velhice.\n ");
         Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -259,26 +315,39 @@ public class Program
     }
 }  
 
-
-public class Character
+public class Entity
 {
     public string name;
-    public string type;
     public int health;
+    public int maxHealth;
     public int power;
     public int coin;
-   
-    // Lista de Inventário precisa ser pública para acessar na Main se necessário, mas aqui estamos usando métodos internos
-    public List<string> Inventory = new List<string>();
 
-
-    public Character(string n, string t, int h, int p, int c)
+    public Entity(string n, int h, int p, int c)
     {
         name = n;
-        type = t;
         health = h;
+        maxHealth = h;
         power = p;
         coin = c;
+    }
+    public void ReceiveDamage(int damage)
+    {
+        health = health - damage;
+        if (health < 0)
+        {
+            health = 0;
+        }
+    }
+}
+public class Character : Entity
+{
+    public string type;
+    public List<string> Inventory = new List<string>();
+
+    public Character(string n, string t, int h, int p, int c) : base(n, h, p, c)
+    {
+        type = t;
     }
 
 
@@ -359,7 +428,7 @@ public class Character
 
     public void Heal()
     {  
-        if (health < 100)
+        if (health < maxHealth)
         {
             if (Inventory.Contains("Poção de Vida"))
             {
@@ -368,9 +437,9 @@ public class Character
                 health  += lifePotion;
 
 
-                if (health >100)
+                if (health >maxHealth)
                 {
-                    health = 100;  
+                    health = maxHealth;  
                 }
 
 
@@ -408,33 +477,14 @@ public class Character
             Console.ResetColor();
         }
     }
-
-
-    public void ReceiveDamage(int damage)
-    {
-        health = health - damage;
-        if (health < 0)
-        {
-            health = 0;
-        }
-    }
 }
 
 
-public class Enemy
+public class Enemy : Entity
 {
-    public string name;
-    public int health;
-    public int power;
-    public int coin;
-
-
-    public Enemy(string n, int h, int p, int c)
+    public Enemy(string n, int h, int p, int c) : base(n, h, p ,c)
     {
-        name = n;
-        health = h;
-        power = p;
-        coin = c;
+    
     }
 
 
@@ -465,16 +515,6 @@ public class Enemy
             finalDamage = (int)(power * 3.0) + Given.Next(10, 81);
         }
         return finalDamage;
-    }
-
-
-    public void ReceiveDamage(int damage)
-    {
-        health = health - damage;
-        if (health < 0)
-        {
-            health = 0;
-        }
     }
 }
 
