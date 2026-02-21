@@ -10,37 +10,165 @@ public class Program
         string n = Console.ReadLine();
         Console.Write("Escolha Sua Classe: ");
         string t = Console.ReadLine();
-       
-        Character Hero = new Character(n, t, 100, 7);
+        Character Hero = new Character(n, t, 100, 7, 10);
         Hero.Inventory.Add("Poção de Vida");
         Hero.Inventory.Add("Poção de Força");
-        Enemy Wolf = new Enemy("Lobo Cinzento", 100, 7);
+        MainIntro(Hero);
+
+        bool inLobby = true;
+
+        while (inLobby == true)
+        {
+            ShowLobbyOptions();
+
+            if (!int.TryParse(Console.ReadLine(), out int choose)) continue;
+
+            if (choose == 1)
+            {
+                Enemy Wolf = new Enemy("Lobo Cinzento", 100, 7, 20);
+                Arena(Hero, Wolf);
+            }
+            else if(choose == 2)
+            {
+                bool inShop = true;
+                while (inShop == true)
+                {
+                    Shop(Hero);
+                    if (!int.TryParse(Console.ReadLine(), out int choose2)) continue;
+
+                    if (choose2 == 1)
+                    {
+                        if (Hero.coin >= 50)
+                        {
+                            Hero.Inventory.Add("Poção de Vida");
+                            Console.WriteLine("* POÇÂO DE VIDA RECEBIDA");
+                            Hero.coin -= 10;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Você não tem moedas o suficiente");
+                        }
+                    }
+                    else if(choose2 == 2)
+                    {
+                        if (Hero.coin >= 50)
+                        {   
+                            Hero.Inventory.Add("Poção de Força");
+                            Console.WriteLine("* POÇÂO DE FORÇA RECEBIDA\n"); 
+                            Hero.coin -= 50;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Você não tem moedas o suficiente");
+                        }
+                    }
+                    else if(choose2 == 3)
+                    {
+                        Console.WriteLine("Você saiu da Loja");
+                        inShop = false;
+                    }
+                } 
+
+            }
+            else if(choose == 3)
+            {
+                MessageGameOver(Hero);
+                inLobby = false;
+            }
+        }
+    }
+
+    public static void ShowLobbyOptions()
+    {
+        Console.WriteLine(" Onde Você Deseja Ir?");
+        Console.WriteLine(" 1. Grande Floresta (Batalhar)");
+        Console.WriteLine(" 2. Loja");
+        Console.WriteLine(" 3. Desistir da Aventura... (FIM DE JOGO)");
+    }
+
+    public static void Story()
+    {
+        Console.WriteLine(" Onde Você Deseja Ir?");
+        Console.WriteLine(" 1. Ir pra Direita");
+        Console.WriteLine(" 2. Ir pra Esquerda");
+        Console.WriteLine(" 3. Continuar em Frente");
+    }
+    public static void ShowOptions()
+    {
+        Console.WriteLine("\n--- O QUE DESEJA FAZER? ---");
+        Console.WriteLine("1. Atacar");
+        Console.WriteLine("2. Abrir Mochila");
+        Console.Write("Escolha: ");
+    }
+    public static void ShowAttackOptions()
+    {
+        Console.WriteLine("------------------------------------- ESCOLHA UM ATAQUE ----------------------------------------");
+        Console.WriteLine("| 1. Corte Rápido (1-11)      | Mult: 0.5x |"); 
+        Console.WriteLine("| 2. Adaga de 2 Gumes (20-50) | Mult: 1.5x |");  
+        Console.WriteLine("| 3. Orbe (15-45)             | Mult: 0.0x |");     
+        Console.WriteLine("| 4. Arriscado (10-80)        | Mult: 2.5x |");
+        Console.WriteLine("| 5. Voltar");
+        Console.WriteLine("------------------------------------------------------------------------------------------------");
+        Console.Write($"Qual Opção Deseja Usar, 1, 2, 3, 4 ou 5?: ");
+    }
+
+
+    public static void ShowStats(Character c, Enemy e)
+    {
+        Console.WriteLine("---------------------------------------------");
+        Console.WriteLine($"| {c.name.ToUpper()} HP: {c.health} | {e.name.ToUpper()} HP: {e.health} |");
+        Console.WriteLine("---------------------------------------------");
+    }
+
+    public static void MainIntro(Character c)
+    {
+        Console.WriteLine($"\nO {c.type} chamado {c.name} irá sair em sua primeira aventura, Sua Força Atual é de {c.power}.\n");
+        Console.WriteLine("MÃE: Espere!! Leve isso com você!\n");
+        Console.WriteLine("* VOCÊ RECEBEU 10 Moedas");
+        Console.WriteLine("* POÇÂO DE VIDA RECEBIDA");
+        Console.WriteLine("* POÇÂO DE FORÇA RECEBIDA\n");
+        Console.WriteLine("MÃE: Por Favor meu filho se cuide...\n");
+    }
+
+
+    public static void BattleIntro(Enemy e)
+    {
+        Console.WriteLine($"Urgente!!, Um {e.name} foi avistado, Chegou a hora da BATALHA!");
+    }
+
+    public static void MessageGameOver(Character c)
+    {
+        Console.WriteLine($"Então o {c.name} Ficou com medo e resolveu desistir de sua aventura, e voltou para sua casa de volta para os braços de sua mãe. Os anos se passaram, ele foi ficando cada vez mais velho e por conta da sua fraqueza ele não conseguiu seguir com o seu sonho de ser um grande {c.type}, e morreu pateticamente de velhice.\n ");
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+        Console.WriteLine("FIM DE JOGO");
+        Console.ResetColor();
+    }
+
+    public static void Arena(Character Hero, Enemy Monster)
+    {
+        BattleIntro(Monster);
         Random Given = new Random();
 
 
-        Intro(Hero, Wolf);
-
-
-        while (Wolf.health > 0 && Hero.health > 0)
+        while (Monster.health > 0 && Hero.health > 0)
         {
-            MostrarStatus(Hero, Wolf);
+            ShowStats(Hero, Monster);
 
 
             bool turnPlayerOff = false;
             int userAttack = 0;
-            // Variável para guardar qual ataque foi usado, para o lobo reagir depois
             int lastAttackUsed = 1;
            
             while(turnPlayerOff == false)
             {
-                MostrarOpcoes();
+                ShowOptions();
 
 
                 if (!int.TryParse(Console.ReadLine(), out int respUser)) continue;
                
                 if (respUser == 1) // ATACAR
                 {
-                    MostrarOpcoesAtaques();
+                    ShowAttackOptions();
                     if (!int.TryParse(Console.ReadLine(), out int respUserAttack)) continue;
                    
                     if(respUserAttack == 5) continue; // Voltar
@@ -55,9 +183,8 @@ public class Program
                     }
                     else
                     {
-                        Wolf.ReceiveDamage(userAttack);
-                        Console.WriteLine($"{Wolf.name} sofreu {userAttack} de Dano!");
-                        lastAttackUsed = respUserAttack; // Guarda qual ataque usou
+                        Monster.ReceiveDamage(userAttack);
+                        Console.WriteLine($"{Monster.name} sofreu {userAttack} de Dano!");
                         turnPlayerOff = true; // Encerra turno do jogador
                     }
                 }
@@ -84,69 +211,51 @@ public class Program
 
 
             // TURNO DO INIMIGO
-            if (Wolf.health > 0)
+            if (Monster.health > 0)
             {
-                int wolfAttack = Wolf.Attack(lastAttackUsed, Given);
+                int monsterAttack = Monster.Attack(lastAttackUsed, Given);
                
-                if (Wolf.health <= 15)
+                if (Monster.health <= 15)
                 {
-                    Console.WriteLine($"O {Wolf.name} Está Sangrando Muito!!, Vida Restante: {Wolf.health}");
+                    Console.WriteLine($"O {Monster.name} Está Sangrando Muito!!, Vida Restante: {Monster.health}");
                 }
                 else
                 {
-                    Console.WriteLine($"O {Wolf.name} Ainda Está Muito Forte, Vida Restante: {Wolf.health}");
+                    Console.WriteLine($"O {Monster.name} Ainda Está Muito Forte, Vida Restante: {Monster.health}");
                 }
 
 
-                Hero.ReceiveDamage(wolfAttack);
-                Console.WriteLine($"O {Wolf.name} Revidou e Te Causou {wolfAttack} de Dano, Sua Vida Restante: {Hero.health}");
+                Hero.ReceiveDamage(monsterAttack);
+                Console.WriteLine($"O {Monster.name} Revidou e Te Causou {monsterAttack} de Dano, Sua Vida Restante: {Hero.health}");
 
 
                 if (Hero.health <= 0)
                 {
-                    Console.WriteLine($"VOCÊ FOI MORTO PELO {Wolf.name.ToUpper()}!");
+                    Console.WriteLine($"VOCÊ FOI MORTO PELO {Monster.name.ToUpper()}!");
                 }
             }
         }
 
 
-        if (Wolf.health <= 0 && Hero.health > 0)
+        if (Monster.health <= 0 && Hero.health > 0)
         {
-            Console.WriteLine($"O {Wolf.name} Foi Morto, Que Vitória Gloriosa!");
+            Console.WriteLine($"O {Monster.name} Foi Morto, Que Vitória Gloriosa!");
+            Hero.coin += Monster.coin;
+            Console.WriteLine($"Você encontoru {Monster.coin} moedas no corpo do {Monster.name}");
         }
     }
 
-
-    public static void MostrarOpcoes()
+    public static void Shop(Character c)
     {
-        Console.WriteLine("\n--- O QUE DESEJA FAZER? ---");
-        Console.WriteLine("1. Atacar");
-        Console.WriteLine("2. Abrir Mochila");
-        Console.Write("Escolha: ");
-    }
-    public static void MostrarOpcoesAtaques()
-    {
-        Console.WriteLine("---------------------------------------------------------------------------------------");
-        Console.WriteLine("| 1. Corte Rápido (1-11)  | Multiplicador: 0.5x | 2. Adaga de 2 Gumes (20-50) | Mult: 1.5x |");
-        Console.WriteLine("| 3. Orbe (15-45)     | Multiplicador: 0.0x | 4. Arriscado (10-80)        | Mult: 2.5x |");
-        Console.WriteLine("| 5. Voltar");
-        Console.WriteLine("---------------------------------------------------------------------------------------");
-        Console.Write($"Qual Opção Deseja Usar, 1, 2, 3, 4 ou 5?: ");
-    }
+        Console.WriteLine("Você vai até o Mercador...\n");
+        Console.WriteLine($"Moedas Restantes: {c.coin}");
+        Console.WriteLine("-------------------------------------------------------------------------");
+        Console.WriteLine("Olá pequeno viajante, oque você deseja?\n");
+        Console.WriteLine("1. Poção de Vida (Custo: 10 moedas)");
+        Console.WriteLine("2. Poção de Força (Custo: 50 moedas)");
+        Console.WriteLine("3. Sair");
 
 
-    public static void MostrarStatus(Character c, Enemy e)
-    {
-        Console.WriteLine("---------------------------------------------");
-        Console.WriteLine($"| {c.name.ToUpper()} HP: {c.health} | {e.name.ToUpper()} HP: {e.health} |");
-        Console.WriteLine("---------------------------------------------");
-    }
-
-
-    public static void Intro(Character c, Enemy e)
-    {
-        Console.WriteLine($"O destemido recruta {c.name}, irá ser nomeado como {c.type} essa noite, Sua Força Atual é de {c.power}.");
-        Console.WriteLine($"Urgente!!, Um {e.name} foi avistado, Chegou a hora da BATALHA!");
     }
 }  
 
@@ -157,17 +266,19 @@ public class Character
     public string type;
     public int health;
     public int power;
+    public int coin;
    
     // Lista de Inventário precisa ser pública para acessar na Main se necessário, mas aqui estamos usando métodos internos
     public List<string> Inventory = new List<string>();
 
 
-    public Character(string n, string t, int h, int p)
+    public Character(string n, string t, int h, int p, int c)
     {
         name = n;
         type = t;
         health = h;
         power = p;
+        coin = c;
     }
 
 
@@ -179,7 +290,6 @@ public class Character
         if (option == 1)
         {
             finalDamage = (int)(power * 0.5) + Given.Next(1, 12);
-            Console.WriteLine(power);
         }
         else if (option == 2)
         {
@@ -316,13 +426,15 @@ public class Enemy
     public string name;
     public int health;
     public int power;
+    public int coin;
 
 
-    public Enemy(string n, int h, int p)
+    public Enemy(string n, int h, int p, int c)
     {
         name = n;
         health = h;
         power = p;
+        coin = c;
     }
 
 
@@ -365,3 +477,4 @@ public class Enemy
         }
     }
 }
+
