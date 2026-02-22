@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 
 public class Program
@@ -9,13 +10,7 @@ public class Program
         Console.Write("Digite Seu Nome: ");
         string n = Console.ReadLine();
 
-        Console.WriteLine("Escolha Sua Classe: ");
-        Console.WriteLine("1. Barbáro   (Vida: 120 | Força:10) | Itens: (2x Pocão de Força) | (5 Moedas) |");
-        Console.WriteLine("2. Arqueira  (Vida: 100 | Força:8)  | Itens: (1x Poção de Vida)  | (10 Moedas)|");
-        Console.WriteLine("3. Fada      (Vida: 130 | Força:7)  | Itens: (2x Poção de Vida)  | (5 Moedas) |");
-        Console.WriteLine("4. Mago      (Vida: 80  | Força:11) | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (3 Moedas) |");
-        Console.WriteLine("5. Elfo      (Vida: 90  | Força:9)  | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (3 Moedas) |");
-        Console.WriteLine("6. Ladino    (Vida: 100 | Força:7)  | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (15 Moedas)|");
+        showClass();
 
 
         bool validateNumber = false;
@@ -26,7 +21,7 @@ public class Program
             if (!int.TryParse(Console.ReadLine(), out int chooseClass)) continue;
             if (chooseClass == 1)
             {
-                Hero = new Character(n, "Barbáro", 120, 10, 5);
+                Hero = new Character(n, "Barbáro", 120, 10, 5 );
                 validateNumber = true;
                 Hero.Inventory.Add("Poção de Força");
                 Hero.Inventory.Add("Poção de Força");
@@ -75,7 +70,7 @@ public class Program
 
         bool inLobby = true;
 
-        while (inLobby == true)
+        while (inLobby == true && Hero.health > 0)
         {
             ShowLobbyOptions();
 
@@ -83,7 +78,7 @@ public class Program
 
             if (choose == 1)
             {
-                Enemy Wolf = new Enemy("Lobo Cinzento", 100, 7, 20);
+                Enemy Wolf = new Enemy("Lobo Cinzento", 100, 7, 20, 25);
                 Arena(Hero, Wolf);
             }
             else if(choose == 2)
@@ -136,6 +131,16 @@ public class Program
         }
     }
 
+    public static void showClass()
+    {
+        Console.WriteLine("Escolha Sua Classe: ");
+        Console.WriteLine("1. Barbáro   (Vida: 120 | Força:10) | Itens: (2x Pocão de Força) | (5 Moedas) |");
+        Console.WriteLine("2. Arqueira  (Vida: 100 | Força:8)  | Itens: (1x Poção de Vida)  | (10 Moedas)|");
+        Console.WriteLine("3. Fada      (Vida: 130 | Força:7)  | Itens: (2x Poção de Vida)  | (5 Moedas) |");
+        Console.WriteLine("4. Mago      (Vida: 80  | Força:11) | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (3 Moedas) |");
+        Console.WriteLine("5. Elfo      (Vida: 90  | Força:9)  | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (3 Moedas) |");
+        Console.WriteLine("6. Ladino    (Vida: 100 | Força:7)  | Itens: (1x Poção de Vida)  | (1x Pocão de Força) | (15 Moedas)|");
+    }
     public static void ShowLobbyOptions()
     {
         Console.WriteLine(" Onde Você Deseja Ir?");
@@ -242,6 +247,7 @@ public class Program
                         Monster.ReceiveDamage(userAttack);
                         Console.WriteLine($"{Monster.name} sofreu {userAttack} de Dano!");
                         turnPlayerOff = true; // Encerra turno do jogador
+                        lastAttackUsed = respUserAttack;
                     }
                 }
                 else if (respUser == 2) // MOCHILA
@@ -269,7 +275,6 @@ public class Program
             // TURNO DO INIMIGO
             if (Monster.health > 0)
             {
-                int monsterAttack = Monster.Attack(lastAttackUsed, Given);
                
                 if (Monster.health <= 15)
                 {
@@ -280,10 +285,9 @@ public class Program
                     Console.WriteLine($"O {Monster.name} Ainda Está Muito Forte, Vida Restante: {Monster.health}");
                 }
 
-
-                Hero.ReceiveDamage(monsterAttack);
+                int monsterAttack = Monster.Attack(lastAttackUsed, Given);
                 Console.WriteLine($"O {Monster.name} Revidou e Te Causou {monsterAttack} de Dano, Sua Vida Restante: {Hero.health}");
-
+                Hero.ReceiveDamage(monsterAttack);
 
                 if (Hero.health <= 0)
                 {
@@ -297,6 +301,7 @@ public class Program
         {
             Console.WriteLine($"O {Monster.name} Foi Morto, Que Vitória Gloriosa!");
             Hero.coin += Monster.coin;
+            Hero.GainXp(Monster.xpReward);
             Console.WriteLine($"Você encontoru {Monster.coin} moedas no corpo do {Monster.name}");
         }
     }
@@ -306,7 +311,7 @@ public class Program
         Console.WriteLine("Você vai até o Mercador...\n");
         Console.WriteLine($"Moedas Restantes: {c.coin}");
         Console.WriteLine("-------------------------------------------------------------------------");
-        Console.WriteLine("Olá pequeno viajante, oque você deseja?\n");
+        Console.WriteLine("Mercador: Olá pequeno viajante, oque você deseja?\n");
         Console.WriteLine("1. Poção de Vida (Custo: 10 moedas)");
         Console.WriteLine("2. Poção de Força (Custo: 50 moedas)");
         Console.WriteLine("3. Sair");
@@ -343,14 +348,42 @@ public class Entity
 public class Character : Entity
 {
     public string type;
-    public List<string> Inventory = new List<string>();
+    public int level = 1;
+    public int xp = 0;
+    public int xpToNextLevel = 50;
 
     public Character(string n, string t, int h, int p, int c) : base(n, h, p, c)
     {
         type = t;
     }
 
+    public void GainXp(int amount)
+    {
 
+        xp += amount;
+
+        Console.WriteLine($"Você ganhou {amount} de XP!");
+        while (xp >= xpToNextLevel)
+        {
+            LevelUp();
+
+        }
+    }
+
+    public void LevelUp()
+    {
+        xp -= xpToNextLevel;
+        level++;
+        xpToNextLevel += 20;
+
+        maxHealth += 10;
+        health = maxHealth;
+        power += 2;
+
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"\n LEVEL UP! Você alcançou o Nível {level}! ");
+        Console.ResetColor();
+    }
     public int Attack(int option, Random Given)
     {
         int finalDamage = 0;
@@ -375,6 +408,7 @@ public class Character : Entity
         return finalDamage;
     }
 
+    public List<string> Inventory = new List<string>();
 
     public bool OpenBag()
     {
@@ -385,12 +419,18 @@ public class Character : Entity
             return false;
         }
 
+        var groupedItems = Inventory.GroupBy(item => item).ToList();
 
-        for (int i = 0; i < Inventory.Count; i++)
+        int option = 1;
+
+        foreach (var group in groupedItems)
         {
-            Console.WriteLine($"{i + 1} . {Inventory[i]}");
+            Console.WriteLine($"{option} . {group.Key} (x{group.Count()})");
+            option++;
         }
-        Console.WriteLine($"{Inventory.Count + 1} . Fechar");
+
+        int optionClose = option;
+        Console.WriteLine($"{optionClose} . Fechar");
 
 
         Console.Write("Escolha: ");
@@ -398,26 +438,29 @@ public class Character : Entity
 
         if (int.TryParse(Console.ReadLine(), out int choose))
         {
-            if (choose == Inventory.Count + 1) return false;
+            if (choose == optionClose) return false;
 
 
             int index = choose - 1;
-            if (index >= 0 && index < Inventory.Count)
+
+            if (index >= 0 && index < groupedItems.Count)
             {
-                if (Inventory[index] == "Poção de Vida")
+                string chosenItem = groupedItems[index].Key;
+
+                if (chosenItem == "Poção de Vida")
                 {
                     Heal();
                     return true;
                 }    
-                else if(Inventory[index] == "Poção de Força")
+                else if(chosenItem == "Poção de Força")
                 {
                     PowerUp();
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine($"Você usou {Inventory[index]}, mas nada aconteceu.");
-                    Inventory.RemoveAt(index);
+                    Console.WriteLine($"Você usou {chosenItem}, mas nada aconteceu.");
+                    Inventory.Remove(chosenItem);
                     return true;
                 }
             }
@@ -481,10 +524,12 @@ public class Character : Entity
 
 
 public class Enemy : Entity
-{
-    public Enemy(string n, int h, int p, int c) : base(n, h, p ,c)
+{       
+
+    public int xpReward;
+    public Enemy(string n, int h, int p, int c, int x) : base(n, h, p ,c)
     {
-    
+        xpReward = x;
     }
 
 
