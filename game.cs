@@ -6,6 +6,7 @@ public class Program
 {
     public static void Main()
     {
+        Console.Clear();
         Console.WriteLine("\n===========================================");
         Console.WriteLine("        BEM-VINDO A JORNADA ÉPICA!         ");
         Console.WriteLine("===========================================\n");
@@ -70,21 +71,98 @@ public class Program
             }
         }
 
+        Console.Clear(); 
         MainIntro(Hero!);
 
         bool inLobby = true;
 
         while (inLobby == true && Hero!.health > 0)
         {
+            Console.Clear(); 
             ShowLobbyOptions();
-
+            
             if (!int.TryParse(Console.ReadLine(), out int choose)) continue;
-
+            
             if (choose == 1)
             {   
-                Random monsters = new Random();
-                int monsterRandom = monsters.Next(1, 5);
+                Console.Clear();
+                exploration(Hero);
+            }
+            else if(choose == 2)
+            {
+                bool inShop = true;
+                while (inShop == true)
+                {
+                    Console.Clear();
+                    Shop(Hero);
+                    if (!int.TryParse(Console.ReadLine(), out int choose2)) continue;
 
+                    if (choose2 == 1)
+                    {
+                        if (Hero.coin >= 10)
+                        {
+                            Hero.Inventory.Add("Poção de Vida");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("\n[+] POÇÃO DE VIDA RECEBIDA!");
+                            Console.ResetColor();
+                            Hero.coin -= 10;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n[!] Você não tem moedas o suficiente.");
+                        }
+                        Console.ReadLine(); 
+                    }
+                    else if(choose2 == 2)
+                    {
+                        if (Hero.coin >= 50)
+                        {   
+                            Hero.Inventory.Add("Poção de Força");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("\n[+] POÇÃO DE FORÇA RECEBIDA!"); 
+                            Console.ResetColor();
+                            Hero.coin -= 50;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n[!] Você não tem moedas o suficiente.");
+                        }
+                        Console.ReadLine(); 
+                    }
+                    else if(choose2 == 3)
+                    {
+                        inShop = false;
+                    }
+                } 
+            }
+            else if(choose == 3)
+            {
+                Console.Clear();
+                MessageGameOver(Hero);
+                inLobby = false;
+            }
+        }
+    }
+
+    public static void exploration(Character Hero) 
+    {
+        bool explore = true;
+        Random chance = new Random();
+
+        while (explore == true && Hero.health > 0) 
+        {
+            Console.Clear();
+            Console.WriteLine("\n==========================================");
+            Console.WriteLine("           EXPLORANDO A FLORESTA...       ");
+            Console.WriteLine("==========================================");
+            System.Threading.Thread.Sleep(1000); 
+
+            int chanceRandom = chance.Next(1, 101);
+            
+            // 60% chance de monstro comum
+            if (chanceRandom >= 1 && chanceRandom <= 60) 
+            {
+                int monsterRandom = chance.Next(1, 5);
                 Enemy enemy = null!;
                 
                 if (monsterRandom == 1)
@@ -108,58 +186,205 @@ public class Program
                     enemy = new Enemy("Slime Gosmento", 60, 3, 5, 5, attacks);
                 }
                 
+                Console.Clear();
                 Arena(Hero, enemy);
             }
-            else if(choose == 2)
+            // 25% chance de acampamento
+            else if (chanceRandom >= 61 && chanceRandom <= 85) 
             {
-                bool inShop = true;
-                while (inShop == true)
-                {
-                    Shop(Hero);
-                    if (!int.TryParse(Console.ReadLine(), out int choose2)) continue;
+                if (Hero.health < Hero.maxHealth) 
+                { 
+                    int camping = 20;
+                    int lastHealth = Hero.health;
+                    Hero.health += camping;
+                    
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("\n==========================================");
+                    Console.WriteLine("Você encontrou um acampamento escondido!");
+                    Console.WriteLine("==========================================");
+                    Console.ResetColor();
+                    
+                    if (Hero.health > Hero.maxHealth) 
+                    {
+                        Hero.health = Hero.maxHealth; 
+                    }
 
-                    if (choose2 == 1)
-                    {
-                        if (Hero.coin >= 10)
-                        {
-                            Hero.Inventory.Add("Poção de Vida");
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\n[+] POÇÃO DE VIDA RECEBIDA!");
-                            Console.ResetColor();
-                            Hero.coin -= 10;
-                        }
-                        else
-                        {
-                            Console.WriteLine("\n[!] Você não tem moedas o suficiente.");
-                        }
-                    }
-                    else if(choose2 == 2)
-                    {
-                        if (Hero.coin >= 50)
-                        {   
-                            Hero.Inventory.Add("Poção de Força");
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\n[+] POÇÃO DE FORÇA RECEBIDA!"); 
-                            Console.ResetColor();
-                            Hero.coin -= 50;
-                        }
-                        else
-                        {
-                            Console.WriteLine("\n[!] Você não tem moedas o suficiente.");
-                        }
-                    }
-                    else if(choose2 == 3)
-                    {
-                        Console.WriteLine("\nSaindo da loja e voltando para a praça...\n");
-                        inShop = false;
-                    }
-                } 
+                    int recovery = Hero.health - lastHealth;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\n(+) Você descansou e recuperou {recovery} de HP!");
+                    Console.ResetColor();
+                }
+                else if (Hero.health == Hero.maxHealth) 
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("\n==========================================");
+                    Console.WriteLine("Você encontrou um acampamento escondido!");
+                    Console.WriteLine("==========================================");
+                    Console.ResetColor();
+                    Console.WriteLine("\nVocê já está com a vida cheia, mas tirou um bom cochilo.");
+                }
             }
-            else if(choose == 3)
+            // 15% chance de Portal Dimensional
+            else if (chanceRandom >= 86 && chanceRandom <= 100) 
             {
-                MessageGameOver(Hero);
-                inLobby = false;
+                int portalRandom = chance.Next(1, 101);
+
+                // PORTAL RANK E (40% de chance)
+                if (portalRandom >= 1 && portalRandom <= 40 )
+                {
+                    if (PortalEncounter("E", "cinza", ConsoleColor.DarkGray)) 
+                    {
+                        string[] slimeAttacks = { "Investida Gelatinosa", "Chicote de Gosma", "Jato Corrosivo", "Explosão Ácida" };
+                        string[] bossAttacks = { "Onda de Gosma", "Salto Esmagador", "Tsunami de Geleia", "Engolfamento Total" };
+                        
+                        Enemy[] inimigosPortalE = {
+                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAttacks),
+                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAttacks),
+                            new Enemy("Slime Mutante", 80, 4, 10, 10, slimeAttacks),
+                            new Enemy("Slime Gigante Primordial", 200, 8, 50, 80, bossAttacks)
+                        };
+
+                        RunPortal(Hero, "E", inimigosPortalE);
+                        
+                        // Depois do portal, seja fugindo ou vencendo, forçamos a volta pra cidade
+                        explore = false; 
+                        continue; // Pula as perguntas de baixo e volta pro Main Loop
+                    }
+                    else 
+                    {
+                        explore = false;
+                        continue;
+                    }
+                }
+                // Exemplo de PORTAL RANK D (30% de chance)
+                else if (portalRandom >= 41 && portalRandom <= 70) 
+                {
+                    if (PortalEncounter("D", "verde musgo", ConsoleColor.DarkGreen)) 
+                    {
+                        string[] goblinAtks = { "Corte Enferrujado", "Golpe Sujo", "Arremesso de Bomba", "Facada nas Costas" };
+                        string[] bossAtks = { "Porretada Brutal", "Grito de Guerra", "Esmagamento Titânico", "Terremoto" };
+                        
+                        Enemy[] inimigosPortalD = {
+                            new Enemy("Goblin Saqueador", 80, 5, 8, 10, goblinAtks),
+                            new Enemy("Goblin Saqueador", 80, 5, 8, 10, goblinAtks),
+                            new Enemy("Rei Orc", 300, 15, 100, 150, bossAtks) // Boss monstrão
+                        };
+
+                        RunPortal(Hero, "D", inimigosPortalD);
+                        explore = false;
+                        continue;
+                    }
+                    else 
+                    {
+                        explore = false;
+                        continue;
+                    }
+                }
             }
+            
+            if (Hero.health > 0)
+            {
+                Console.WriteLine("\n----------------------------------");
+                Console.WriteLine("O que deseja fazer agora?");
+                Console.WriteLine("1. Continuar Explorando");
+                Console.WriteLine("2. Voltar para a Praça Central");
+                Console.Write("Escolha: ");
+                
+                string? choice = Console.ReadLine();
+                if (choice == "2")
+                {
+                    explore = false;
+                    Console.WriteLine("\nVocê decide voltar em segurança para a cidade.");
+                    System.Threading.Thread.Sleep(1000);
+                }
+            }
+        }
+    } 
+
+    // ---- NOVA FUNÇÃO DE ENCONTRO DE PORTAL AQUI ----
+    public static bool PortalEncounter(string rank, string colorText, ConsoleColor portalColor)
+    {
+        Console.Clear();
+        Console.ForegroundColor = portalColor; 
+        Console.WriteLine("\n[!!!] O CÉU FICA ESCURO. O AR FICA PESADO.");
+        System.Threading.Thread.Sleep(1500);
+        Console.WriteLine($"UMA FENDA DIMENSIONAL {colorText.ToUpper()} SE ABRE NA SUA FRENTE!");
+        System.Threading.Thread.Sleep(1500);
+        
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("\n=======================================================");
+        Console.WriteLine($"          >>> PORTAL RANK {rank} ENCONTRADO <<<             ");
+        Console.WriteLine("=======================================================");
+        Console.ResetColor();
+        
+        Console.WriteLine("\nO que você faz?");
+        Console.WriteLine("1. Entrar no Portal (Aviso: Várias batalhas seguidas!)");
+        Console.WriteLine("2. Fugir e voltar para a cidade");
+        
+        while (true) 
+        {
+            Console.Write("\nEscolha: ");
+            if (!int.TryParse(Console.ReadLine(), out int choice)) continue;
+
+            if (choice == 1)
+            {
+                Console.Clear();
+                return true; 
+            }
+            else if (choice == 2)
+            {
+                Console.WriteLine("\nVocê sentiu um calafrio na espinha, decidiu fugir do portal e voltar para a segurança da vila.");
+                Console.ReadLine();
+                return false; 
+            }
+            else
+            {
+                Console.WriteLine("\n[!] Número Inválido. Escolha o Número 1 ou 2.");
+            }
+        }
+    }
+
+    public static void RunPortal(Character Hero, string rankName, Enemy[] monsters)
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine($"\nVocê respira fundo e atravessa o PORTAL RANK {rankName}...");
+        Console.ResetColor();
+        Console.ReadLine();
+
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            if (Hero.health <= 0) break; 
+
+            Console.Clear();
+            
+            if (i == monsters.Length - 1) 
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\n=======================================================");
+                Console.WriteLine(" [ALERTA] A SALA DO CHEFE FOI ALCANÇADA! O CHÃO TREME!");
+                Console.WriteLine("=======================================================");
+                Console.ResetColor();
+                Console.ReadLine();
+                Console.Clear();
+            }
+            else
+            {
+                Console.WriteLine($"\n--- SALA {i + 1} DO PORTAL ---");
+            }
+
+            Arena(Hero, monsters[i]);
+        }
+
+        if (Hero.health > 0)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\n=======================================================");
+            Console.WriteLine($"    O PORTAL RANK {rankName} FOI FECHADO COM SUCESSO! VITÓRIA!  ");
+            Console.WriteLine("=======================================================");
+            Console.ResetColor();
+            Console.ReadLine();
         }
     }
 
@@ -169,9 +394,9 @@ public class Program
         Console.WriteLine("1. Bárbaro   (Vida: 120 | Força: 10) | Itens: (2x Poção de Força)         | (5 Moedas)");
         Console.WriteLine("2. Arqueira  (Vida: 100 | Força: 8)  | Itens: (1x Poção de Vida)          | (10 Moedas)");
         Console.WriteLine("3. Fada      (Vida: 130 | Força: 7)  | Itens: (2x Poção de Vida)          | (5 Moedas)");
-        Console.WriteLine("4. Mago      (Vida: 80  | Força: 11) | Itens: (1x Poção de Vida, 1x Poção de Força)       | (3 Moedas)");
-        Console.WriteLine("5. Elfo      (Vida: 90  | Força: 9)  | Itens: (1x Poção de Vida, 1x Poção de Força)       | (3 Moedas)");
-        Console.WriteLine("6. Ladino    (Vida: 100 | Força: 7)  | Itens: (1x Poção de Vida, 1x Poção de Força)       | (15 Moedas)");
+        Console.WriteLine("4. Mago      (Vida: 80  | Força: 11) | Itens: (1x PVida, 1x PForça)       | (3 Moedas)");
+        Console.WriteLine("5. Elfo      (Vida: 90  | Força: 9)  | Itens: (1x PVida, 1x PForça)       | (3 Moedas)");
+        Console.WriteLine("6. Ladino    (Vida: 100 | Força: 7)  | Itens: (1x PVida, 1x PForça)       | (15 Moedas)");
         Console.WriteLine("---------------------------");
     }
     
@@ -181,7 +406,7 @@ public class Program
         Console.WriteLine("             PRAÇA CENTRAL                ");
         Console.WriteLine("==========================================");
         Console.WriteLine(" Onde Você Deseja Ir?");
-        Console.WriteLine(" 1. Grande Floresta (Batalhar)");
+        Console.WriteLine(" 1. Grande Floresta (Explorar)");
         Console.WriteLine(" 2. Loja da Vila");
         Console.WriteLine(" 3. Desistir da Aventura... (FIM DE JOGO)");
         Console.WriteLine("==========================================");
@@ -221,7 +446,7 @@ public class Program
     {
         Console.WriteLine($"\n=======================================================");
         Console.WriteLine($" O {c.type} chamado {c.name} irá sair em sua primeira aventura.");
-        Console.WriteLine($" Força: {c.power}");
+        Console.WriteLine($" Força Inicial: {c.power}");
         Console.WriteLine($"\n MÃE: Espere!! Leve isso com você!");
         Console.WriteLine($" * VOCÊ RECEBEU {c.coin} Moedas!");
         Console.WriteLine($" MÃE: Por favor meu filho, se cuide...");
@@ -243,7 +468,6 @@ public class Program
         Console.WriteLine($"\nEntão o {c.name} ficou com medo e resolveu desistir de sua aventura.");
         Console.WriteLine($"Voltou para casa, para os braços de sua mãe.");
         Console.WriteLine($"Os anos se passaram, e sem seguir seu sonho de ser um grande {c.type},");
-        Console.WriteLine($"Ele viu as pessoas que ele mais amava morrerem e com muito sofrimento,");
         Console.WriteLine($"ele viveu uma vida patética e morreu de velhice.\n");
         
         Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -271,12 +495,17 @@ public class Program
 
                 if (!int.TryParse(Console.ReadLine(), out int respUser)) continue;
                 
-                if (respUser == 1) // ATACAR
+                if (respUser == 1) 
                 {
                     ShowAttackOptions();
                     if (!int.TryParse(Console.ReadLine(), out int respUserAttack)) continue;
                     
-                    if(respUserAttack == 5) continue; // Voltar
+                    if(respUserAttack == 5)
+                    {
+                        Console.Clear();
+                        ShowStats(Hero, Monster); 
+                        continue; 
+                    }
 
                     userAttack = Hero.Attack(respUserAttack, Given);
                     
@@ -287,22 +516,25 @@ public class Program
                     }
                     else
                     {
+                        Console.Clear(); 
                         Monster.ReceiveDamage(userAttack);
                         Console.WriteLine($"\n>>> BOOM! O {Monster.name} sofreu {userAttack} de Dano!");
                         turnPlayerOff = true; 
                     }
                 }
-                else if (respUser == 2) // MOCHILA
+                else if (respUser == 2) 
                 {
                     bool usedItem = Hero.OpenBag();
 
                     if (usedItem == true)
                     {
+                        Console.Clear(); 
                         turnPlayerOff = true;
                     }
                     else
                     {
-                        Console.WriteLine("\nVocê fechou a Mochila.");
+                        Console.Clear();
+                        ShowStats(Hero, Monster);
                     }
                 }
                 else
@@ -311,7 +543,6 @@ public class Program
                 }
             }
 
-            // TURNO DO INIMIGO
             if (Monster.health > 0)
             {
                 Console.WriteLine("\n--- Turno do Inimigo ---");
@@ -326,6 +557,10 @@ public class Program
                 
                 Hero.ReceiveDamage(monsterAttack);
                 Console.WriteLine($"<<< O {Monster.name} te causou {monsterAttack} de Dano! (Sua Vida: {Hero.health})");
+                
+                Console.WriteLine("\nPressione ENTER para o próximo turno...");
+                Console.ReadLine();
+                Console.Clear(); 
 
                 if (Hero.health <= 0)
                 {
@@ -334,6 +569,7 @@ public class Program
                     Console.WriteLine($"      VOCÊ FOI MORTO PELO {Monster.name.ToUpper()}!");
                     Console.WriteLine($"================================================\n");
                     Console.ResetColor();
+                    Console.ReadLine();
                 }
             }
         }
@@ -351,7 +587,7 @@ public class Program
             
             Hero.GainXp(Monster.xpReward);
 
-            Console.WriteLine("\nPressione ENTER para voltar à praça...");
+            Console.WriteLine("\nPressione ENTER para continuar...");
             Console.ReadLine();
         }
     }
@@ -458,6 +694,7 @@ public class Character : Entity
         {
             Console.WriteLine(" (Vazia)");
             Console.WriteLine("===================================");
+            Console.ReadLine(); 
             return false;
         }
 
@@ -499,6 +736,7 @@ public class Character : Entity
                 {
                     Console.WriteLine($"\nVocê usou {chosenItem}, mas nada aconteceu.");
                     Inventory.Remove(chosenItem);
+                    Console.ReadLine();
                     return true;
                 }
             }
@@ -524,15 +762,18 @@ public class Character : Entity
                 Inventory.Remove("Poção de Vida");
                 Console.WriteLine($"\n(+) Você bebeu uma Poção de Vida e recuperou {recovery} de HP!");
                 Console.ResetColor();
+                Console.ReadLine(); 
             }
             else
             {
                 Console.WriteLine("\n[!] Você não tem Poção de Vida");
+                Console.ReadLine();
             }
         }
         else
         {
             Console.WriteLine("\n[!] Sua vida já está cheia.");
+            Console.ReadLine();
         }
     }
     
@@ -547,6 +788,7 @@ public class Character : Entity
             Inventory.Remove("Poção de Força");
             Console.WriteLine($"\n(💪) Você bebeu uma Poção de Força, e aumentou {strengthPotion} pontos de Força! (Atual: {power})");
             Console.ResetColor();
+            Console.ReadLine(); 
         }
     }
 }
@@ -564,7 +806,6 @@ public class Enemy : Entity
 
     public int Attack(Random Given)
     {
-        // Arrays começam em 0, então sorteamos de 0 a 3
         int chooseMonster = Given.Next(0, 4); 
         int finalDamage = 0;
         
