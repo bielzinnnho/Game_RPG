@@ -162,7 +162,7 @@ public class Program
             // 60% chance de monstro comum
             if (chanceRandom >= 1 && chanceRandom <= 60) 
             {
-                int monsterRandom = chance.Next(1, 5);
+                int monsterRandom = chance.Next(1, 11);
                 Enemy enemy = null!;
                 
                 if (monsterRandom == 1)
@@ -184,6 +184,36 @@ public class Program
                 {
                     string[] attacks = { "Investida Gelatinosa", "Chicote de Gosma", "Jato Corrosivo", "Explosão Ácida" };
                     enemy = new Enemy("Slime Gosmento", 60, 3, 5, 5, attacks);
+                }
+                else if (monsterRandom == 5)
+                {
+                    string[] attacks = { "Orbe Sombrio", "Lança de Gelo", "Raio Necrótico", "Explosão de Almas" };
+                    enemy = new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, attacks);
+                }
+                else if (monsterRandom == 6)
+                {
+                    string[] attacks = { "Picada Venenosa", "Salto Predatório", "Cuspir Teia", "Banquete Aracnídeo" };
+                    enemy = new Enemy("Aranha das Sombras", 110, 12, 20, 25, attacks);    
+                }
+                else if (monsterRandom == 7)
+                {
+                    string[] attacks = { "Soco Inglês", "Facada Traiçoeira", "Chute Baixo", "Corte de Adaga" };
+                    enemy = new Enemy("Bandido da Estrada", 85, 6, 15, 15, attacks);  
+                }
+                else if (monsterRandom == 8)
+                {
+                    string[] attacks = { "Focinhada", "Investida com Presas", "Pisoteio", "Carga Brutal" };
+                    enemy = new Enemy("Javali Selvagem", 110, 6, 5, 18, attacks);
+                }
+                else if (monsterRandom == 9)
+                {
+                    string[] attacks = { "Rasante", "Mordida Vampírica", "Bater de Asas", "Grito Supersônico" };
+                    enemy = new Enemy("Morcego Cavernícola", 50, 5, 4, 10, attacks);
+                }
+                else if (monsterRandom == 10)
+                {
+                    string[] attacks = { "Patada Pesada", "Mordida Feroz", "Abraço de Urso", "Fúria Selvagem" };
+                    enemy = new Enemy("Urso Pardo Furioso", 130, 9, 8, 22, attacks);
                 }
                 
                 Console.Clear();
@@ -227,21 +257,23 @@ public class Program
             // 15% chance de Portal Dimensional
             else if (chanceRandom >= 86 && chanceRandom <= 100) 
             {
-                int portalRandom = chance.Next(1, 101);
+                int portalRandom = chance.Next(1, 1001);
 
                 // PORTAL RANK E (40% de chance)
-                if (portalRandom >= 1 && portalRandom <= 40 )
+                if (portalRandom >= 1 && portalRandom <= 400 )
                 {
                     if (PortalEncounter("E", "cinza", ConsoleColor.DarkGray)) 
-                    {
-                        string[] slimeAttacks = { "Investida Gelatinosa", "Chicote de Gosma", "Jato Corrosivo", "Explosão Ácida" };
-                        string[] bossAttacks = { "Onda de Gosma", "Salto Esmagador", "Tsunami de Geleia", "Engolfamento Total" };
+                    {   
+                        string[] banditAtks = { "Soco Inglês", "Facada Traiçoeira", "Chute Baixo", "Corte de Adaga" };
+                        string[] slimeAtks = { "Investida Gelatinosa", "Chicote de Gosma", "Jato Corrosivo", "Explosão Ácida" };
+                        string[] bossAtks = { "Onda de Gosma", "Salto Esmagador", "Tsunami de Geleia", "Engolfamento Total" };
                         
                         Enemy[] inimigosPortalE = {
-                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAttacks),
-                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAttacks),
-                            new Enemy("Slime Mutante", 80, 4, 10, 10, slimeAttacks),
-                            new Enemy("Slime Gigante Primordial", 200, 8, 50, 80, bossAttacks)
+                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAtks),
+                            new Enemy("Bandido Sorrateiro", 85, 6, 15, 15, banditAtks), 
+                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAtks),
+                            new Enemy("Slime Mutante", 80, 4, 10, 10, slimeAtks),
+                            new Enemy("Slime Gigante", 280, 13, 50, 80, bossAtks)
                         };
 
                         RunPortal(Hero, "E", inimigosPortalE);
@@ -257,17 +289,20 @@ public class Program
                     }
                 }
                 // Exemplo de PORTAL RANK D (30% de chance)
-                else if (portalRandom >= 41 && portalRandom <= 70) 
+                else if (portalRandom >= 401 && portalRandom <= 700) 
                 {
-                    if (PortalEncounter("D", "verde musgo", ConsoleColor.DarkGreen)) 
+                    if (PortalEncounter("D", "verde", ConsoleColor.DarkGreen)) 
                     {
                         string[] goblinAtks = { "Corte Enferrujado", "Golpe Sujo", "Arremesso de Bomba", "Facada nas Costas" };
                         string[] bossAtks = { "Porretada Brutal", "Grito de Guerra", "Esmagamento Titânico", "Terremoto" };
+                        string[] batAtks = { "Rasante", "Mordida Vampírica", "Bater de Asas", "Grito Supersônico" };
                         
                         Enemy[] inimigosPortalD = {
                             new Enemy("Goblin Saqueador", 80, 5, 8, 10, goblinAtks),
+                            new Enemy("Morcego Cavernícola", 50, 5, 4, 10, batAtks),
                             new Enemy("Goblin Saqueador", 80, 5, 8, 10, goblinAtks),
-                            new Enemy("Rei Orc", 300, 15, 100, 150, bossAtks) // Boss monstrão
+                            new Enemy("Goblin Guerreiro", 100, 6, 13, 15, goblinAtks),
+                            new Enemy("Rei Goblin", 300, 15, 100, 180, bossAtks) 
                         };
 
                         RunPortal(Hero, "D", inimigosPortalD);
@@ -280,7 +315,125 @@ public class Program
                         continue;
                     }
                 }
+                else if (portalRandom >= 701 && portalRandom <= 850) 
+                {
+                    if (PortalEncounter("C", "amarelo", ConsoleColor.DarkYellow)) 
+                    {
+                        string[] boarAtks = { "Focinhada", "Investida com Presas", "Pisoteio", "Carga Brutal" };
+                        string[] wolfAtks = { "Mordida Rápida", "Garra Dilacerante", "Investida Selvagem", "Frenesi do Alfa" }; 
+                        string[] bossAtks = { "Mordida Selvagem", "Patada Esmagadora", "Olhar do Alfa", "Carnificina Absoluta" };
+                        
+                        Enemy[] inimigosPortalC = {
+                            new Enemy("Lobo Cinzento", 100, 7, 10, 20, wolfAtks),
+                            new Enemy("Javali Selvagem", 110, 6, 5, 18, boarAtks),
+                            new Enemy("Lobo Cinzento", 100, 7, 10, 20, wolfAtks),
+                            new Enemy("Lobo Preto", 120, 8, 15, 25, wolfAtks),
+                            new Enemy("Lobo Branco(Alfa)", 320, 17, 200, 250, bossAtks) 
+                        };
+
+                        RunPortal(Hero, "C", inimigosPortalC);
+                        explore = false;
+                        continue;
+                    }
+                    else 
+                    {
+                        explore = false;
+                        continue;
+                    }
+                }
+                else if (portalRandom >= 851 && portalRandom <= 940) 
+                {
+                    if (PortalEncounter("B", "azul", ConsoleColor.DarkBlue)) 
+                    {
+                        string[] garguAtks = { "Soco de Pedra", "Mergulho de Concreto", "Grito de Eco", "Terremoto Devastador" };
+                        string[] vampAtks = { "Garra Sanguinária", "Corte Fantasma", "Enxame de Morcegos", "Frenesi Escarlate" };
+                        string[] magicAtks = { "Orbe Sombrio", "Lança de Gelo", "Raio Necrótico", "Explosão de Almas" };
+                        string[] spiderAtks = { "Picada Venenosa", "Salto Predatório", "Cuspir Teia", "Banquete Aracnídeo" };
+
+                        Enemy[] inimigosPortalB = {
+                            new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, magicAtks),
+                            new Enemy("Aranha das Sombras", 110, 12, 20, 25, spiderAtks),
+                            new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, magicAtks),
+                            new Enemy("Gárgula de Obsidiana", 250, 18, 50, 60, garguAtks),
+                            new Enemy("Lorde Vampiro", 550, 27, 300, 350, vampAtks)
+                        };
+
+                        RunPortal(Hero, "B", inimigosPortalB);
+                        explore = false;
+                        continue;
+                    }
+                    else 
+                    {
+                        explore = false;
+                        continue;
+                    }
+                }
+                else if (portalRandom >= 941 && portalRandom <= 985) 
+                {
+                    if (PortalEncounter("A", "vermelho", ConsoleColor.DarkRed)) 
+                    {
+                        
+                        string[] pardoAtks = { "Patada Pesada", "Mordida Feroz", "Abraço de Urso", "Fúria Selvagem" };
+                        string[] polarAtks = { "Garra Gélida", "Quebra-Gelo", "Investida da Nevasca", "Rugido de Inverno" };
+                        string[] pandaAtks = { "Soco de Bambu", "Impacto Pesado", "Rolamento Destrutivo", "Ira do Guardião" };
+                        string[] negroAtks = { "Patada Sombria", "Mordida do Vazio", "Ataque Sorrateiro", "Frenesi Obscuro" };
+                        string[] knightAtks = { "Estocada Fria", "Corte Brutal", "Golpe de Escudo", "Dança das Lâminas Mortais" };
+
+                        Enemy[] inimigosPortalA = {
+
+                            new Enemy("Urso Pardo Esmagador", 350, 20, 80, 150, pardoAtks),
+                            new Enemy("Urso Polar Gélido", 480, 24, 120, 200, polarAtks),
+                            new Enemy("Panda Guardião Ancestral", 600, 28, 180, 280, pandaAtks),
+                            new Enemy("Urso Negro do Abismo", 750, 33, 250, 350, negroAtks),
+                            new Enemy("Cavaleiro Morto-Vivo", 1000, 42, 800, 1000, knightAtks)
+                        };
+
+                        RunPortal(Hero, "A", inimigosPortalA);
+                        explore = false;
+                        continue;
+                    }
+                    else 
+                    {
+                        explore = false;
+                        continue;
+                    }
+                }
+                else if (portalRandom >= 986 && portalRandom <= 999) 
+                {
+                    if (PortalEncounter("S", "Roxo", ConsoleColor.DarkMagenta)) 
+                    {
+                        
+                        string[] pardoAtks = { "Patada Pesada", "Mordida Feroz", "Abraço de Urso", "Fúria Selvagem" };
+                        string[] polarAtks = { "Garra Gélida", "Quebra-Gelo", "Investida da Nevasca", "Rugido de Inverno" };
+                        string[] pandaAtks = { "Soco de Bambu", "Impacto Pesado", "Rolamento Destrutivo", "Ira do Guardião" };
+                        string[] negroAtks = { "Patada Sombria", "Mordida do Vazio", "Ataque Sorrateiro", "Frenesi Obscuro" };
+                        string[] knightAtks = { "Estocada Fria", "Corte Brutal", "Golpe de Escudo", "Dança das Lâminas Mortais" };
+
+                        Enemy[] inimigosPortalS = {
+
+                            new Enemy("Urso Pardo Esmagador", 350, 20, 80, 150, pardoAtks),
+                            new Enemy("Urso Polar Gélido", 480, 24, 120, 200, polarAtks),
+                            new Enemy("Panda Guardião Ancestral", 600, 28, 180, 280, pandaAtks),
+                            new Enemy("Urso Negro do Abismo", 750, 33, 250, 350, negroAtks),
+                            new Enemy("Cavaleiro Morto-Vivo", 1000, 42, 800, 1000, knightAtks)
+                        };
+
+                        RunPortal(Hero, "S", inimigosPortalS);
+                        explore = false;
+                        continue;
+                    }
+                    else 
+                    {
+                        explore = false;
+                        continue;
+                    }
+                }
             }
+                        string[] dragaoAtks = { "Mordida Estilhaçante", "Golpe de Cauda Colossal", "Chuva de Meteoros", "SOPRO DO INFERNO" };
+                        new Enemy("Dragão Infernal", 1000, 60, 500, 1000, dragaoAtks);
+                        
+                        string[] deusAtks = { "Toque do Vazio", "Dilacerar a Realidade", "Olhar da Morte", "APAGAR EXISTÊNCIA" };
+                        new Enemy("Monarca da Destruição", 3000, 100, 5000, 10000, deusAtks);
             
             if (Hero.health > 0)
             {
