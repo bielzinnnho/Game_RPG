@@ -402,20 +402,21 @@ public class Program
                 {
                     if (PortalEncounter("S", "Roxo", ConsoleColor.DarkMagenta)) 
                     {
-                        
-                        string[] pardoAtks = { "Patada Pesada", "Mordida Feroz", "Abraço de Urso", "Fúria Selvagem" };
-                        string[] polarAtks = { "Garra Gélida", "Quebra-Gelo", "Investida da Nevasca", "Rugido de Inverno" };
-                        string[] pandaAtks = { "Soco de Bambu", "Impacto Pesado", "Rolamento Destrutivo", "Ira do Guardião" };
-                        string[] negroAtks = { "Patada Sombria", "Mordida do Vazio", "Ataque Sorrateiro", "Frenesi Obscuro" };
-                        string[] knightAtks = { "Estocada Fria", "Corte Brutal", "Golpe de Escudo", "Dança das Lâminas Mortais" };
+
+                        string[] ogreAtks = { "Soco Pesado", "Porretada Brutal", "Pisoteio Sísmico", "Esmagamento Titânico" };
+                        string[] exeAtks = { "Machadada Brutal", "Grito do Abismo", "Fissura Terrestre", "Guilhotina Dimensional" };
+                        string[] twoHeadedAtks = { "Golpe Duplo", "Cabeçada Confusa", "Grito Ensurdecedor", "Porretada Cruzada" };
+                        string[] bossOgreAtks = { "Tremor Terrestre", "Grito de Guerra", "Porrete de Aço Esmagador", "Ira do Rei Colossal" };
+                        string[] dragonAtks = { "Mordida Estilhaçante", "Golpe de Cauda Colossal", "Chuva de Meteoros", "SOPRO DO INFERNO" };
 
                         Enemy[] inimigosPortalS = {
 
-                            new Enemy("Urso Pardo Esmagador", 350, 20, 80, 150, pardoAtks),
-                            new Enemy("Urso Polar Gélido", 480, 24, 120, 200, polarAtks),
-                            new Enemy("Panda Guardião Ancestral", 600, 28, 180, 280, pandaAtks),
-                            new Enemy("Urso Negro do Abismo", 750, 33, 250, 350, negroAtks),
-                            new Enemy("Cavaleiro Morto-Vivo", 1000, 42, 800, 1000, knightAtks)
+
+                            new Enemy("Ogro Gigante Primordial", 800, 30, 300, 500, ogreAtks),
+                            new Enemy("Ogro Titã de Duas Cabeças", 1000, 40, 450, 750, twoHeadedAtks),
+                            new Enemy("Ogro Executor Abissal", 1400, 48, 600, 1000, exeAtks),
+                            new Enemy("Rei Ogro Destruidor de Mundos", 1600, 55, 1000, 1500, bossOgreAtks),
+                            new Enemy("Dragão Infernal", 2000, 70, 2000, 3000, dragonAtks)
                         };
 
                         RunPortal(Hero, "S", inimigosPortalS);
@@ -428,12 +429,44 @@ public class Program
                         continue;
                     }
                 }
+                else if (portalRandom >= 1000) 
+                {
+                    if (PortalEncounter("SS", "Preto", ConsoleColor.Black)) 
+                    {
+
+                        string[] bossOgreAtks = { "Tremor Terrestre", "Grito de Guerra", "Porrete de Aço Esmagador", "Ira do Rei Colossal" };
+                        string[] dragonAtks = { "Mordida Estilhaçante", "Golpe de Cauda Colossal", "Chuva de Meteoros", "SOPRO DO INFERNO" };
+                        string[] knightAtks = { "Estocada Fria", "Corte Brutal", "Golpe de Escudo", "Dança das Lâminas Mortais" };
+                        string[] vampAtks = { "Garra Sanguinária", "Corte Fantasma", "Enxame de Morcegos", "Frenesi Escarlate" };
+                        string[] wolfAtks = { "Mordida Selvagem", "Patada Esmagadora", "Olhar do Alfa", "Carnificina Absoluta" };
+                        string[] goblinAtks = { "Porretada Brutal", "Grito de Guerra", "Esmagamento Titânico", "Terremoto" };
+                        string[] slimeAtks = { "Onda de Gosma", "Salto Esmagador", "Tsunami de Geleia", "Engolfamento Total" };
+                        string[] godAtks = { "Toque do Vazio", "Dilacerar a Realidade", "Olhar da Morte", "APAGAR EXISTÊNCIA" };
+
+                        Enemy[] inimigosPortalSS = {
+
+                            new Enemy("Slime Gigante", 280, 13, 50, 80, slimeAtks),
+                            new Enemy("Rei Goblin", 300, 15, 100, 180, goblinAtks), 
+                            new Enemy("Lobo Branco(Alfa)", 320, 17, 200, 250, wolfAtks), 
+                            new Enemy("Lorde Vampiro", 550, 27, 300, 350, vampAtks),
+                            new Enemy("Cavaleiro Morto-Vivo", 1000, 42, 800, 1000, knightAtks),
+                            new Enemy("Rei Ogro Destruidor de Mundos", 1600, 55, 1000, 1500, bossOgreAtks),
+                            new Enemy("Dragão Infernal", 2000, 70, 2000, 3000, dragonAtks),
+                            new Enemy("Monarca da Destruição", 3000, 100, 5000, 10000, godAtks)
+                        };
+
+                        RunPortal(Hero, "SS", inimigosPortalSS);
+                        explore = false;
+                        continue;
+                    }
+                    else 
+                    {
+                        explore = false;
+                        continue;
+                    }
+                }
             }
-                        string[] dragaoAtks = { "Mordida Estilhaçante", "Golpe de Cauda Colossal", "Chuva de Meteoros", "SOPRO DO INFERNO" };
-                        new Enemy("Dragão Infernal", 1000, 60, 500, 1000, dragaoAtks);
                         
-                        string[] deusAtks = { "Toque do Vazio", "Dilacerar a Realidade", "Olhar da Morte", "APAGAR EXISTÊNCIA" };
-                        new Enemy("Monarca da Destruição", 3000, 100, 5000, 10000, deusAtks);
             
             if (Hero.health > 0)
             {
@@ -547,9 +580,9 @@ public class Program
         Console.WriteLine("1. Bárbaro   (Vida: 120 | Força: 10) | Itens: (2x Poção de Força)         | (5 Moedas)");
         Console.WriteLine("2. Arqueira  (Vida: 100 | Força: 8)  | Itens: (1x Poção de Vida)          | (10 Moedas)");
         Console.WriteLine("3. Fada      (Vida: 130 | Força: 7)  | Itens: (2x Poção de Vida)          | (5 Moedas)");
-        Console.WriteLine("4. Mago      (Vida: 80  | Força: 11) | Itens: (1x PVida, 1x PForça)       | (3 Moedas)");
-        Console.WriteLine("5. Elfo      (Vida: 90  | Força: 9)  | Itens: (1x PVida, 1x PForça)       | (3 Moedas)");
-        Console.WriteLine("6. Ladino    (Vida: 100 | Força: 7)  | Itens: (1x PVida, 1x PForça)       | (15 Moedas)");
+        Console.WriteLine("4. Mago      (Vida: 80  | Força: 11) | Itens: (1x Poção de Vida, 1x Poção de Força)       | (3 Moedas)");
+        Console.WriteLine("5. Elfo      (Vida: 90  | Força: 9)  | Itens: (1x Poção de Vida, 1x Poção de Força)       | (3 Moedas)");
+        Console.WriteLine("6. Ladino    (Vida: 100 | Força: 7)  | Itens: (1x Poção de Vida, 1x Poção de Força)       | (15 Moedas)");
         Console.WriteLine("---------------------------");
     }
     
@@ -768,6 +801,7 @@ public class Entity
     public int maxHealth;
     public int power;
     public int coin;
+    public int defense = 0;
 
     public Entity(string name, int health, int power, int coin)
     {
@@ -779,7 +813,23 @@ public class Entity
     }
     public void ReceiveDamage(int damage)
     {
-        health -= damage;
+        int defenseActive = defense / 2;
+        int damageMin = (int)(damage * 0.20);
+
+        if (damageMin < 1) damageMin = 1;
+
+        if (damage <= defenseActive)
+        {    
+            health -= damageMin;
+        }
+        else
+        {   
+            int damageCalc = damage - defenseActive;  
+
+            if (damageCalc < damageMin) damageCalc = damageMin;
+            health -= damageCalc;
+        }
+        
         if (health < 0) health = 0;
     }
 }
@@ -790,6 +840,7 @@ public class Character : Entity
     public int level = 1;
     public int xp = 0;
     public int xpToNextLevel = 50;
+ 
 
     public Character(string name, string type, int health, int power, int coin) : base(name, health, power, coin)
     {
@@ -810,7 +861,7 @@ public class Character : Entity
     {
         xp -= xpToNextLevel;
         level++;
-        xpToNextLevel += 20;
+        xpToNextLevel += 50;
 
         maxHealth += 10;
         health = maxHealth;
