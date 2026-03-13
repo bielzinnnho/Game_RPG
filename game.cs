@@ -7,6 +7,7 @@ public class Program
     public static void Main()
     {
         Console.Clear();
+        ItemDatabase.StartDatabase();
         Console.ForegroundColor = ConsoleColor.DarkYellow;
         Console.WriteLine("\n===========================================");
         Console.WriteLine("        BEM-VINDO A JORNADA ÉPICA!         ");
@@ -35,8 +36,8 @@ public class Program
                 Hero.equipItem(new Item("Peitoral de Couro batido", "Peitoral", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Calça de Couro batido", "Calça", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Botas de Couro batido", "Botas", 0, 1, "Comum", 0));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
-                Hero.Inventory.Add(new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40));
                 validateNumber = true;
 
             }
@@ -49,8 +50,8 @@ public class Program
                 Hero.equipItem(new Item("Peitoral de Couro batido", "Peitoral", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Calça de Couro batido", "Calça", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Botas de Couro batido", "Botas", 0, 1, "Comum", 0));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
                 validateNumber = true;
             }
             else if (chooseClass == 3)
@@ -62,9 +63,9 @@ public class Program
                 Hero.equipItem(new Item("Peitoral de Pano", "Peitoral", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Calça de Pano", "Calça", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Botas de Couro batido", "Botas", 0, 1, "Comum", 0));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
                 validateNumber = true;
             }
             else if (chooseClass == 4)
@@ -76,8 +77,8 @@ public class Program
                 Hero.equipItem(new Item("Manto de Couro batido", "Peitoral", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Calça de Couro batido", "Calça", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Botas de Couro batido", "Botas", 0, 1, "Comum", 0));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
-                Hero.Inventory.Add(new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40));
                 validateNumber = true;
             }
             else if (chooseClass == 5)
@@ -89,8 +90,8 @@ public class Program
                 Hero.equipItem(new Item("Peitoral de Couro batido", "Peitoral", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Calça de Couro batido", "Calça", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Botas de Couro batido", "Botas", 0, 1, "Comum", 0));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
-                Hero.Inventory.Add(new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40));
                 validateNumber = true;
             }
             else if (chooseClass == 6)
@@ -102,7 +103,7 @@ public class Program
                 Hero.equipItem(new Item("Manto de Couro batido", "Peitoral", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Calça de Couro batido", "Calça", 0, 1, "Comum", 0));
                 Hero.equipItem(new Item("Botas de Couro batido", "Botas", 0, 1, "Comum", 0));
-                Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
                 validateNumber = true;
             }
             else
@@ -141,7 +142,7 @@ public class Program
                     {
                         if (Hero.coin >= 10)
                         {
-                            Hero.Inventory.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
+                            Hero.bagConsumables.Add(new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30));
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("\n[+] POÇÃO DE VIDA RECEBIDA!");
                             Console.ResetColor();
@@ -157,7 +158,7 @@ public class Program
                     {
                         if (Hero.coin >= 25)
                         {  
-                            Hero.Inventory.Add(new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40));
+                            Hero.bagConsumables.Add(new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40));
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("\n[+] POÇÃO DE ENERGIA RECEBIDA!");
                             Console.ResetColor();
@@ -173,7 +174,7 @@ public class Program
                     {
                         if (Hero.coin >= 200)
                         {  
-                            Hero.Inventory.Add(new Item("Poção de Força", "Consumível", 0, 0, "Comum", 3));
+                            Hero.bagConsumables.Add(new Item("Poção de Força", "Consumível", 0, 0, "Comum", 3));
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("\n[+] POÇÃO DE FORÇA RECEBIDA!");
                             Console.ResetColor();
@@ -230,52 +231,52 @@ public class Program
                 if (monsterRandom == 1)
                 {  
                     string[] attacks = { "Mordida Rápida", "Garra Dilacerante", "Investida Selvagem", "Frenesi do Alfa" };
-                    enemy = new Enemy("Lobo Cinzento", 100, 7, 10, 20, attacks, 0.08);
+                    enemy = new Enemy("Lobo Cinzento", 100, 7, 10, 20, attacks, 0.08, null);
                 }
                 else if (monsterRandom == 2)
                 {
                     string[] attacks = { "Corte Enferrujado", "Golpe Sujo", "Arremesso de Bomba", "Facada nas Costas" };
-                    enemy = new Enemy("Goblin Saqueador", 80, 5, 8, 10, attacks, 0.08);
+                    enemy = new Enemy("Goblin Saqueador", 80, 5, 8, 10, attacks, 0.08, null);
                 }
                 else if (monsterRandom == 3)
                 {
                     string[] attacks = { "Soco Pesado", "Porretada Brutal", "Pisoteio Sísmico", "Esmagamento Titânico" };
-                    enemy = new Enemy("Ogro Gigante", 150, 10, 15, 30, attacks, 0.08);
+                    enemy = new Enemy("Ogro Gigante", 150, 10, 15, 30, attacks, 0.08, null);
                 }
                 else if (monsterRandom == 4)
                 {
                     string[] attacks = { "Investida Gelatinosa", "Chicote de Gosma", "Jato Corrosivo", "Explosão Ácida" };
-                    enemy = new Enemy("Slime Gosmento", 60, 3, 5, 5, attacks, 0.08);
+                    enemy = new Enemy("Slime Gosmento", 60, 3, 5, 5, attacks, 0.08, null);
                 }
                 else if (monsterRandom == 5)
                 {
                     string[] attacks = { "Orbe Sombrio", "Lança de Gelo", "Raio Necrótico", "Explosão de Almas" };
-                    enemy = new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, attacks, 0.08);
+                    enemy = new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, attacks, 0.08, null);
                 }
                 else if (monsterRandom == 6)
                 {
                     string[] attacks = { "Picada Venenosa", "Salto Predatório", "Cuspir Teia", "Banquete Aracnídeo" };
-                    enemy = new Enemy("Aranha das Sombras", 110, 12, 20, 25, attacks, 0.08);    
+                    enemy = new Enemy("Aranha das Sombras", 110, 12, 20, 25, attacks, 0.08, null);    
                 }
                 else if (monsterRandom == 7)
                 {
                     string[] attacks = { "Soco Inglês", "Facada Traiçoeira", "Chute Baixo", "Corte de Adaga" };
-                    enemy = new Enemy("Bandido da Estrada", 85, 6, 15, 15, attacks, 0.08);  
+                    enemy = new Enemy("Bandido da Estrada", 85, 6, 15, 15, attacks, 0.08, null);  
                 }
                 else if (monsterRandom == 8)
                 {
                     string[] attacks = { "Focinhada", "Investida com Presas", "Pisoteio", "Carga Brutal" };
-                    enemy = new Enemy("Javali Selvagem", 110, 6, 5, 18, attacks, 0.08);
+                    enemy = new Enemy("Javali Selvagem", 110, 6, 5, 18, attacks, 0.08, null);
                 }
                 else if (monsterRandom == 9)
                 {
                     string[] attacks = { "Rasante", "Mordida Vampírica", "Bater de Asas", "Grito Supersônico" };
-                    enemy = new Enemy("Morcego Cavernícola", 50, 5, 4, 10, attacks, 0.08);
+                    enemy = new Enemy("Morcego Cavernícola", 50, 5, 4, 10, attacks, 0.08, null);
                 }
                 else if (monsterRandom == 10)
                 {
                     string[] attacks = { "Patada Pesada", "Mordida Feroz", "Abraço de Urso", "Fúria Selvagem" };
-                    enemy = new Enemy("Urso Pardo Furioso", 130, 9, 8, 22, attacks, 0.08);
+                    enemy = new Enemy("Urso Pardo Furioso", 130, 9, 8, 22, attacks, 0.08, null);
                 }
                 
                 Console.Clear();
@@ -379,16 +380,28 @@ public class Program
                 {
                     if (PortalEncounter("E", "cinza", ConsoleColor.DarkGray))
                     {  
-                        string[] banditAtks = { "Soco Inglês", "Facada Traiçoeira", "Chute Baixo", "Corte de Adaga" };
                         string[] slimeAtks = { "Investida Gelatinosa", "Chicote de Gosma", "Jato Corrosivo", "Explosão Ácida" };
                         string[] bossAtks = { "Onda de Gosma", "Salto Esmagador", "Tsunami de Geleia", "Engolfamento Total" };
                         
+                        LootSlot[] loots = {
+                            new LootSlot(0, 10),
+                            new LootSlot(2, 20),
+                            new LootSlot(4, 10),
+                        };
+                        LootSlot[] lootsBoos = {
+                            new LootSlot(0, 50),
+                            new LootSlot(1, 10),
+                            new LootSlot(4, 10),
+                            new LootSlot(2, 20),
+                            new LootSlot(5, 5),
+                        };
+
                         Enemy[] inimigosPortalE = {
-                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAtks, 0.4),
-                            new Enemy("Slime Venenoso", 85, 6, 15, 15, slimeAtks, 0.4),
-                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAtks, 0.4),
-                            new Enemy("Slime Mutante", 80, 4, 10, 10, slimeAtks, 0.4),
-                            new Enemy("Slime Gigante", 280, 13, 50, 80, bossAtks, 0.4)
+                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAtks, 0.4, loots),
+                            new Enemy("Slime Venenoso", 85, 6, 15, 15, slimeAtks, 0.4, loots),
+                            new Enemy("Slime Gosmento", 60, 3, 5, 5, slimeAtks, 0.4, loots),
+                            new Enemy("Slime Mutante", 80, 4, 10, 10, slimeAtks, 0.4, loots),
+                            new Enemy("Slime Gigante", 280, 13, 50, 80, bossAtks, 0.4, lootsBoos)
                         };
 
                         RunPortal(Hero, "E", inimigosPortalE);
@@ -412,12 +425,15 @@ public class Program
                         string[] bossAtks = { "Porretada Brutal", "Grito de Guerra", "Esmagamento Titânico", "Terremoto" };
                         string[] generalAtks = { "Lâmina Serrilhada", "Chuva de Flechas Negras", "Ordem de Massacre", "EXECUÇÃO SANGRENTA" };
 
+                        LootSlot[] loots = null;
+
+
                         Enemy[] inimigosPortalD = {
-                            new Enemy("Goblin Saqueador", 80, 5, 8, 10, goblinAtks, 0.4),
-                            new Enemy("General Goblin", 95, 7, 10, 15, generalAtks, 0.4),
-                            new Enemy("Goblin Saqueador", 80, 5, 8, 10, goblinAtks, 0.4),
-                            new Enemy("Goblin Guerreiro", 100, 6, 13, 15, goblinAtks, 0.4),
-                            new Enemy("Rei Goblin", 300, 15, 100, 180, bossAtks, 0.4)
+                            new Enemy("Goblin Saqueador", 80, 5, 8, 10, goblinAtks, 0.4, loots),
+                            new Enemy("General Goblin", 95, 7, 10, 15, generalAtks, 0.4, loots),
+                            new Enemy("Goblin Saqueador", 80, 5, 8, 10, goblinAtks, 0.4, loots),
+                            new Enemy("Goblin Guerreiro", 100, 6, 13, 15, goblinAtks, 0.4, loots),
+                            new Enemy("Rei Goblin", 300, 15, 100, 180, bossAtks, 0.4, loots)
                         };
 
                         RunPortal(Hero, "D", inimigosPortalD);
@@ -437,13 +453,15 @@ public class Program
                         string[] shadowWolfAtks = { "Mordida na Jugular", "Bote das Sombras", "Garras do Eclipse", "ESTRANGULAR" };  
                         string[] wolfAtks = { "Mordida Rápida", "Garra Dilacerante", "Investida Selvagem", "FESTIVAL DA CARNIFICINA" };
                         string[] bossAtks = { "Mordida Selvagem", "Patada Esmagadora", "Eclipse Sangrento", "Carnificina Absoluta" };
+
+                         LootSlot[] loots = null;
                         
                         Enemy[] inimigosPortalC = {
-                            new Enemy("Lobo Cinzento", 100, 7, 10, 20, wolfAtks, 0.4),
-                            new Enemy("Lobo Cinzento", 100, 7, 10, 20, wolfAtks, 0.4),
-                            new Enemy("Lobo das Sombras", 115, 8, 8, 20, shadowWolfAtks, 0.4),
-                            new Enemy("Lobo Preto", 120, 8, 15, 25, wolfAtks, 0.4),
-                            new Enemy("Lobo Branco(Alfa)", 320, 17, 200, 250, bossAtks, 0.4)
+                            new Enemy("Lobo Cinzento", 100, 7, 10, 20, wolfAtks, 0.4, loots),
+                            new Enemy("Lobo Cinzento", 100, 7, 10, 20, wolfAtks, 0.4, loots),
+                            new Enemy("Lobo das Sombras", 115, 8, 8, 20, shadowWolfAtks, 0.4, loots),
+                            new Enemy("Lobo Preto", 120, 8, 15, 25, wolfAtks, 0.4, loots),
+                            new Enemy("Lobo Branco(Alfa)", 320, 17, 200, 250, bossAtks, 0.4, loots)
                         };
 
                         RunPortal(Hero, "C", inimigosPortalC);
@@ -465,12 +483,14 @@ public class Program
                         string[] magicAtks = { "Orbe Sombrio", "Lança de Gelo", "Raio Necrótico", "Explosão de Almas" };
                         string[] spiderAtks = { "Picada Venenosa", "Salto Predatório", "Cuspir Teia", "Banquete Aracnídeo" };
 
+                         LootSlot[] loots = null;
+
                         Enemy[] inimigosPortalB = {
-                            new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, magicAtks, 0.4),
-                            new Enemy("Aranha das Sombras", 110, 12, 20, 25, spiderAtks, 0.4),
-                            new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, magicAtks, 0.4),
-                            new Enemy("Gárgula de Obsidiana", 250, 18, 50, 60, garguAtks, 0.4),
-                            new Enemy("Lorde Vampiro", 550, 27, 300, 350, vampAtks, 0.4)
+                            new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, magicAtks, 0.4, loots),
+                            new Enemy("Aranha das Sombras", 110, 12, 20, 25, spiderAtks, 0.4, loots),
+                            new Enemy("Esqueleto Feiticeiro", 90, 15, 25, 30, magicAtks, 0.4, loots),
+                            new Enemy("Gárgula de Obsidiana", 250, 18, 50, 60, garguAtks, 0.4, loots),
+                            new Enemy("Lorde Vampiro", 550, 27, 300, 350, vampAtks, 0.4, loots)
                         };
 
                         RunPortal(Hero, "B", inimigosPortalB);
@@ -494,13 +514,15 @@ public class Program
                         string[] negroAtks = { "Patada Sombria", "Mordida do Vazio", "Ataque Sorrateiro", "Frenesi Obscuro" };
                         string[] bossAtks = { "Golpe Selvagem", "Corte Brutal", "Frenesi Sanguinário", "ESMAGAMENTO SÍSMICO" };
 
+                         LootSlot[] loots = null;
+
                         Enemy[] inimigosPortalA = {
 
-                            new Enemy("Urso Pardo Esmagador", 350, 20, 80, 150, pardoAtks, 0.1),
-                            new Enemy("Urso Polar Gélido", 480, 24, 120, 200, polarAtks, 0.1),
-                            new Enemy("Panda Guardião Ancestral", 600, 28, 180, 280, pandaAtks, 0.1),
-                            new Enemy("Urso Negro do Abismo", 750, 33, 250, 350, negroAtks, 0.1),
-                            new Enemy("Urso Gigante Devorador", 1000, 42, 800, 1000, bossAtks, 0.1)
+                            new Enemy("Urso Pardo Esmagador", 350, 20, 80, 150, pardoAtks, 0.1, loots),
+                            new Enemy("Urso Polar Gélido", 480, 24, 120, 200, polarAtks, 0.1, loots),
+                            new Enemy("Panda Guardião Ancestral", 600, 28, 180, 280, pandaAtks, 0.1, loots),
+                            new Enemy("Urso Negro do Abismo", 750, 33, 250, 350, negroAtks, 0.1, loots),
+                            new Enemy("Urso Gigante Devorador", 1000, 42, 800, 1000, bossAtks, 0.1, loots)
                         };
 
                         RunPortal(Hero, "A", inimigosPortalA);
@@ -524,14 +546,16 @@ public class Program
                         string[] bossOgreAtks = { "Tremor Terrestre", "Grito de Guerra", "Porrete de Aço Esmagador", "Ira do Rei Colossal" };
                         string[] dragonAtks = { "Mordida Estilhaçante", "Golpe de Cauda Colossal", "Chuva de Meteoros", "SOPRO DO INFERNO" };
 
+                         LootSlot[] loots = null;
+
                         Enemy[] inimigosPortalS = {
 
 
-                            new Enemy("Ogro Gigante Primordial", 800, 30, 300, 500, ogreAtks, 0.1),
-                            new Enemy("Ogro Titã de Duas Cabeças", 1000, 40, 450, 750, twoHeadedAtks, 0.1),
-                            new Enemy("Ogro Executor Abissal", 1400, 48, 600, 1000, exeAtks, 0.1),
-                            new Enemy("Rei Ogro Destruidor de Mundos", 1600, 55, 1000, 1500, bossOgreAtks, 0.1),
-                            new Enemy("Deus Ogro das Cinzas", 2000, 70, 2000, 3000, dragonAtks, 0.1)
+                            new Enemy("Ogro Gigante Primordial", 800, 30, 300, 500, ogreAtks, 0.1, loots),
+                            new Enemy("Ogro Titã de Duas Cabeças", 1000, 40, 450, 750, twoHeadedAtks, 0.1, loots),
+                            new Enemy("Ogro Executor Abissal", 1400, 48, 600, 1000, exeAtks, 0.1, loots),
+                            new Enemy("Rei Ogro Destruidor de Mundos", 1600, 55, 1000, 1500, bossOgreAtks, 0.1, loots),
+                            new Enemy("Deus Ogro das Cinzas", 2000, 70, 2000, 3000, dragonAtks, 0.1, loots)
                         };
 
                         RunPortal(Hero, "S", inimigosPortalS);
@@ -558,17 +582,19 @@ public class Program
                         string[] slimeAtks = { "Onda de Gosma", "Salto Esmagador", "Tsunami de Geleia", "Engolfamento Total" };
                         string[] godAtks = { "Toque do Vazio", "Dilacerar a Realidade", "Olhar da Morte", "APAGAR EXISTÊNCIA" };
 
+                         LootSlot[] loots = null;
+
                         Enemy[] inimigosPortalSS = {
 
-                            new Enemy("Slime Gigante", 280, 13, 50, 80, slimeAtks, 0.1),
-                            new Enemy("Rei Goblin", 300, 15, 100, 180, goblinAtks, 0.1),
-                            new Enemy("Lobo Branco(Alfa)", 320, 17, 200, 250, wolfAtks, 0.1),
-                            new Enemy("Lorde Vampiro", 550, 27, 300, 350, vampAtks, 0.1),
-                            new Enemy("Cavaleiro Morto-Vivo", 800, 32, 500, 700, knightAtks, 0.1),
-                            new Enemy("Urso Gigante Devorador", 1000, 42, 800, 1000, bossBearAtks, 0.1),
-                            new Enemy("Deus Ogro das Cinzas", 2000, 70, 2000, 3000, bossOgreAtks, 0.1),
-                            new Enemy("Dragão Infernal", 2500, 80, 3000, 4000, dragonAtks, 0.1),
-                            new Enemy("Monarca da Destruição", 3000, 100, 5000, 10000, godAtks, 0.1)
+                            new Enemy("Slime Gigante", 280, 13, 50, 80, slimeAtks, 0.1, loots),
+                            new Enemy("Rei Goblin", 300, 15, 100, 180, goblinAtks, 0.1, loots),
+                            new Enemy("Lobo Branco(Alfa)", 320, 17, 200, 250, wolfAtks, 0.1, loots),
+                            new Enemy("Lorde Vampiro", 550, 27, 300, 350, vampAtks, 0.1, loots),
+                            new Enemy("Cavaleiro Morto-Vivo", 800, 32, 500, 700, knightAtks, 0.1, loots),
+                            new Enemy("Urso Gigante Devorador", 1000, 42, 800, 1000, bossBearAtks, 0.1, loots),
+                            new Enemy("Deus Ogro das Cinzas", 2000, 70, 2000, 3000, bossOgreAtks, 0.1, loots),
+                            new Enemy("Dragão Infernal", 2500, 80, 3000, 4000, dragonAtks, 0.1, loots),
+                            new Enemy("Monarca da Destruição", 3000, 100, 5000, 10000, godAtks, 0.1, loots)
                         };
 
                         RunPortal(Hero, "SS", inimigosPortalSS);
@@ -964,6 +990,35 @@ public class Program
             Console.WriteLine($"=========================================");
             Console.ResetColor();
 
+            if (Monster.loot != null)
+            {
+                foreach (LootSlot pack in Monster.loot)
+                {
+                    int chance = Given.Next(1, 101);
+                
+                    if (chance <= pack.dropChance)
+                    {
+                        Item itemRaffle= ItemDatabase.GetItem(pack.idItem);
+
+                        if (itemRaffle != null)
+                        {
+                            if (itemRaffle.type == "Consumível")
+                            {
+                                Hero.bagConsumables.Add(itemRaffle);
+                            }
+                            else 
+                            {
+                                Hero.bagEquipments.Add(itemRaffle);
+                            }
+
+                            Console.ForegroundColor = ConsoleColor.Magenta; 
+                            Console.WriteLine($"\n[+] UAU! O {Monster.name} deixou cair: {itemRaffle.name} {itemRaffle.rarity}!");
+                            Console.ResetColor();
+                        }
+                    }
+                }
+            } 
+
             Hero.coin += Monster.coin;
             Console.WriteLine($"\n+ Você encontrou {Monster.coin} moedas no corpo do monstro!");
             
@@ -1147,80 +1202,139 @@ public class Character : Entity
         return finalDamage;
     }
 
-    public List<Item> Inventory = new List<Item>();
+   public List<Item> bagConsumables = new List<Item>(); // Só para Poções
+    public List<Item> bagEquipments = new List<Item>();  // Só para Armas e Armaduras
+
+
 
     public bool OpenBag()
+{
+    Console.WriteLine("\n============= MOCHILA =============");
+    Console.WriteLine(" 1. Poções e Consumíveis");
+    Console.WriteLine(" 2. Equipamentos");
+    Console.WriteLine(" 3. Voltar");
+    Console.WriteLine("===================================");
+    Console.Write("Qual bolso deseja abrir?: ");
+
+    if (int.TryParse(Console.ReadLine(), out int chooseBag))
     {
-        Console.WriteLine("\n============= MOCHILA =============");
-        if (Inventory.Count == 0)
+        
+        if (chooseBag == 1)
         {
-            Console.WriteLine(" (Vazia)");
+            Console.WriteLine("\n--- Poções e Consumíveis ---");
+            if (bagConsumables.Count == 0)
+            {
+                Console.WriteLine(" (Vazio)");
+                Console.ReadLine();
+                return false;
+            }
+           
+            var groupedItems = bagConsumables.GroupBy(item => item.name).ToList();
+            int option = 1;
+
+            foreach (var group in groupedItems)
+            {
+                Console.WriteLine($" {option}. {group.Key} (x{group.Count()})");
+                option++;
+            }
+
+            int optionClose = option;
+            Console.WriteLine($" {optionClose}. Fechar");
             Console.WriteLine("===================================");
-            Console.ReadLine();
+            Console.Write("Escolher item: ");
+
+            if (int.TryParse(Console.ReadLine(), out int choose))
+            {
+                if (choose == optionClose) return false;
+
+                int index = choose - 1;
+
+                if (index >= 0 && index < groupedItems.Count)
+                {
+                    string chosenItem = groupedItems[index].Key;
+
+                    if (chosenItem == "Poção de Vida")
+                    {
+                        Heal();
+                        return true;
+                    }
+                    else if (chosenItem == "Poção de Energia")
+                    {
+                        Restore();
+                        return true;
+                    }    
+                    else if (chosenItem == "Poção de Força")
+                    {
+                        PowerUp();
+                        return true;
+                    }
+                } 
+            }
             return false;
         }
-
-        var groupedItems = Inventory.GroupBy(item => item.name).ToList();
-        int option = 1;
-
-        foreach (var group in groupedItems)
+        else if (chooseBag == 2)
         {
-            Console.WriteLine($" {option}. {group.Key} (x{group.Count()})");
-            option++;
-        }
 
-        int optionClose = option;
-        Console.WriteLine($" {optionClose}. Fechar");
-        Console.WriteLine("===================================");
-        Console.Write("Escolher item: ");
-
-        if (int.TryParse(Console.ReadLine(), out int choose))
-        {
-            if (choose == optionClose) return false;
-
-            int index = choose - 1;
-
-            if (index >= 0 && index < groupedItems.Count)
+            Console.WriteLine("\n--- Equipamentos ---");
+            if (bagEquipments.Count == 0)
             {
-                string chosenItem = groupedItems[index].Key;
-
-                if (chosenItem == "Poção de Vida")
-                {
-                    Heal();
-                    return true;
-                }
-                else if (chosenItem == "Poção de Energia")
-                {
-                    Restore();
-                    return true;
-                }    
-                else if (chosenItem == "Poção de Força")
-                {
-                    PowerUp();
-                    return true;
-                }
-                else
-                {
-                    
-                    Item? misteryItem = Inventory.Find(i => i.name == chosenItem);
-                    if (misteryItem != null)
-                    {
-                        equipItem(misteryItem);
-                    }
-                    Console.ReadLine();
-                    return true;
-                }
+                Console.WriteLine(" (Vazio)");
+                Console.ReadLine();
+                return false;
             }
-        }  
-        return false;
-    }
+           
+            var groupedItems = bagEquipments.GroupBy(item => item.name).ToList();
+            int option = 1;
 
+            foreach (var group in groupedItems)
+            {
+                Console.WriteLine($" {option}. {group.Key} (x{group.Count()})");
+                option++;
+            }
+
+            int optionClose = option;
+            Console.WriteLine($" {optionClose}. Fechar");
+            Console.WriteLine("===================================");
+            Console.Write("Escolher item: ");
+
+            if (int.TryParse(Console.ReadLine(), out int choose))
+            {
+                if (choose == optionClose) return false;
+
+                int index = choose - 1;
+
+                if (index >= 0 && index < groupedItems.Count)
+                {
+
+                    string chosenItem = groupedItems[index].Key;
+                    Item? misteryItem = bagEquipments.Find(i => i.name == chosenItem);
+                        if (misteryItem != null)
+                        {
+                            equipItem(misteryItem);
+                        }
+                        Console.ReadLine();
+                        return true;  
+                } 
+            }
+            return false;
+        }
+        else if (chooseBag == 3)
+        {
+            
+            return false;
+        }
+    }
+    
+    
+    Console.WriteLine("\n[!] Opção Inválida.");
+    return false;
+}
     public void Heal()
     {  
         if (health < maxHealth)
         {
 
-            Item? potionFound = Inventory.Find(p => p.name == "Poção de Vida");
+            Item? potionFound = bagConsumables.Find(p => p.name == "Poção de Vida");
             if (potionFound != null)
             {
                 int lifePotion = potionFound.effect;
@@ -1232,7 +1346,7 @@ public class Character : Entity
                 int recovery = health - lastHealth;
 
                 Console.ForegroundColor = ConsoleColor.Green;
-                Inventory.Remove(potionFound);
+                bagConsumables.Remove(potionFound);
                 Console.WriteLine($"\n(+) Você bebeu uma Poção de Vida e recuperou {recovery} de HP!");
                 Console.ResetColor();
                 Console.ReadLine();
@@ -1252,14 +1366,14 @@ public class Character : Entity
     
     public void PowerUp()
     {
-        Item? potionFound = Inventory.Find(p => p.name == "Poção de Força");
+        Item? potionFound = bagConsumables.Find(p => p.name == "Poção de Força");
         if (potionFound != null)
         {
             int strengthPotion = potionFound.effect;
             power += strengthPotion;
             
             Console.ForegroundColor = ConsoleColor.Green;
-            Inventory.Remove(potionFound);
+            bagConsumables.Remove(potionFound);
             Console.WriteLine($"\n(💪) Você bebeu uma Poção de Força, e aumentou {strengthPotion} pontos de Força! (Atual: {power})");
             Console.ResetColor();
             Console.ReadLine();
@@ -1270,7 +1384,7 @@ public class Character : Entity
     {
         if (stamina < maxStamina)
         {
-            Item? potionFound = Inventory.Find(p => p.name == "Poção de Energia");
+            Item? potionFound = bagConsumables.Find(p => p.name == "Poção de Energia");
             if (potionFound != null)
             {
                 int staminaPotion = potionFound.effect;
@@ -1282,7 +1396,7 @@ public class Character : Entity
                 int recovery = stamina - lastStamina;
 
                 Console.ForegroundColor = ConsoleColor.Green;
-                Inventory.Remove(potionFound);
+                bagConsumables.Remove(potionFound);
                 Console.WriteLine($"\n(+) Você bebeu uma Poção de Energia e recuperou {recovery} de Energia!");
                 Console.ResetColor();
                 Console.ReadLine();
@@ -1307,84 +1421,84 @@ public class Character : Entity
             if (equippedWeapon != null)
             {                
                 power -= equippedWeapon.bonusPower;
-                Inventory.Add(equippedWeapon);
+                bagEquipments.Add(equippedWeapon);
             }
             
             equippedWeapon = newItem;
             power += equippedWeapon.bonusPower;
 
             Console.WriteLine($"\n[+] {equippedWeapon.name} Foi Equipado!");
-            Inventory.Remove(newItem);
+            bagEquipments.Remove(newItem);
         }
         else if (newItem.type == "Capacete")
         {
             if (equippedHelmet != null)
             {
                 defense -= equippedHelmet.bonusDefense;
-                Inventory.Add(equippedHelmet);
+                bagEquipments.Add(equippedHelmet);
             }
 
             equippedHelmet = newItem;
             defense += equippedHelmet.bonusDefense;
 
             Console.WriteLine($"\n[+] {equippedHelmet.name} Foi Equipado!");
-            Inventory.Remove(newItem);
+            bagEquipments.Remove(newItem);
         }
         else if (newItem.type == "Manopla")
         {
             if (equippedGauntlet != null)
             {
                 defense -= equippedGauntlet.bonusDefense;
-                Inventory.Add(equippedGauntlet);
+                bagEquipments.Add(equippedGauntlet);
             }
 
             equippedGauntlet = newItem;
             defense += equippedGauntlet.bonusDefense;
 
             Console.WriteLine($"\n[+] {equippedGauntlet.name} Foi Equipado!");
-            Inventory.Remove(newItem);
+            bagEquipments.Remove(newItem);
         }
         else if (newItem.type == "Peitoral")
         {
             if (equippedChest != null)
             {
                 defense -= equippedChest.bonusDefense;
-                Inventory.Add(equippedChest);
+                bagEquipments.Add(equippedChest);
             }
 
             equippedChest = newItem;
             defense += equippedChest.bonusDefense;
 
             Console.WriteLine($"\n[+] {equippedChest.name} Foi Equipado!");
-            Inventory.Remove(newItem);
+            bagEquipments.Remove(newItem);
         }
         else if (newItem.type == "Calça")
         {
             if (equippedLegs != null)
             {
                 defense -= equippedLegs.bonusDefense;
-                Inventory.Add(equippedLegs);
+                bagEquipments.Add(equippedLegs);
             }
 
             equippedLegs = newItem;
             defense += equippedLegs.bonusDefense;
 
             Console.WriteLine($"\n[+] {equippedLegs.name} Foi Equipado!");
-            Inventory.Remove(newItem);
+            bagEquipments.Remove(newItem);
         }
         else if (newItem.type == "Botas")
         {
             if (equippedBoots != null)
             {
                 defense -= equippedBoots.bonusDefense;
-                Inventory.Add(equippedBoots);
+                bagEquipments.Add(equippedBoots);
             }
 
             equippedBoots = newItem;
             defense += equippedBoots.bonusDefense;
 
             Console.WriteLine($"\n[+] {equippedBoots.name} Foi Equipado!");
-            Inventory.Remove(newItem);
+            bagEquipments.Remove(newItem);
         }
     }
 }
@@ -1410,19 +1524,56 @@ public class Item
     }
 }
 
+public static class ItemDatabase
+{
+    public static Item[] chest = new Item[100];
+
+    public static void StartDatabase()
+    {
+        chest[0] = new Item("Poção de Vida", "Consumível", 0, 0, "Comum", 30);
+        chest[1] = new Item("Poção de Força", "Consumível", 0, 0, "Comum", 3);
+        chest[2] = new Item("Poção de Energia", "Consumível", 0, 0, "Comum", 40);
+        chest[3] = new Item("Espada de Pedra", "Arma", 7, 0, "Comum", 0);
+        chest[4] = new Item("Faca Curta", "Arma", 6, 0, "Comum", 0);
+        chest[5] = new Item("Colete de Pelo de Lobo", "Peitoral", 0, 4, "Comum", 0);
+    }
+
+    public static Item GetItem(int id)
+    {
+        Item original = chest[id];
+
+        if (original == null) return null;
+
+        return new Item(original.name, original.type, original.bonusPower, original.bonusDefense, original.rarity, original.effect);
+    }
+
+}
+
+public class LootSlot
+{
+    public int idItem;
+    public int dropChance;
+
+    public LootSlot(int idItem, int dropChance) 
+    {
+        this.idItem = idItem;
+        this.dropChance = dropChance;    
+    }
+}
+
 public class Enemy : Entity
 {      
     public int xpReward;
     public string[] attacks;
     public double scaleRate;
-    // public Item? loot;
-    // public int dropChance;
+    public LootSlot[] loot;
 
-    public Enemy(string name, int health, int power, int coin, int xpReward, string[] attacks, double scaleRate ) : base(name, health, power, coin, 0)
+    public Enemy(string name, int health, int power, int coin, int xpReward, string[] attacks, double scaleRate, LootSlot[] loot ) : base(name, health, power, coin, 0)
     {
         this.xpReward = xpReward;
         this.attacks = attacks;
         this.scaleRate = scaleRate;
+        this.loot = loot;
     }
 
     public int Attack(Random Given)
